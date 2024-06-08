@@ -38,7 +38,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        spring.json.type.mapping: purchaseConfirmation:com.example.aibouauth.kafka.PurchaseConfirmation
+        spring.json.type.mapping: purchaseConfirmation:com.example.aibouauth.core.kafka.PurchaseConfirmation
 application :
   security:
     jwt:

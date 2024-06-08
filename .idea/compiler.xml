@@ -12,10 +12,12 @@
         <module name="core" />
         <module name="discovery" />
         <module name="payment" />
-        <module name="aibouauth" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="aibouauth" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

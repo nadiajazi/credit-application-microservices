@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static com.example.aibouauth.notification.notification.NotificationType.*;
@@ -37,6 +38,7 @@ public class NotificationConsumer {
                 paymentConfirmation.customerEmail(),
                 customerName,
                 paymentConfirmation.amount()
+
         );
     }
 
@@ -55,6 +57,8 @@ public class NotificationConsumer {
                 purchaseConfirmation.customerName(),
                 purchaseConfirmation.email(),
                 purchaseConfirmation.products()
+
+
         );
     }
 }

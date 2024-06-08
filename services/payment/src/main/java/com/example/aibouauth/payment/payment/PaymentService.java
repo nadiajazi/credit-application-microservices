@@ -44,10 +44,10 @@ public class PaymentService {
         notificationProducer.sendNotification(
               new PaymentNotificationRequest(
                      request.amount(),
-                      request.paymentMethod(),
+                     request.paymentMethod(),
                      request.customer().firstName(),
-                    request.customer().lastName(),
-                    request.customer().email()
+                     request.customer().lastName(),
+                     request.customer().email()
         )
         );
         payment = repository.save(payment);
