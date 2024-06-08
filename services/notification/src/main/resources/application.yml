@@ -1,0 +1,56 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka
+server:
+  port: 8040
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  application:
+    name: notification
+  config:
+    import: optional:configserver:http://localhost:8888
+  datasource:
+    url: jdbc:mysql://localhost:3308/notification
+    username: nadia
+    password: nadia
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+        format_sql: true
+    database: mysql
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:29092
+      group-id: paymentGroup,purchaseGroup
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: purchaseConfirmation:com.example.aibouauth.notification.kafka.purchase.PurchaseConfirmation,paymentConfirmation:com.example.aibouauth.notification.kafka.payment.PaymentConfirmation
+  mail:
+    host: localhost
+    port: 1025
+    username: nadia
+    password: nadia
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enabled: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
