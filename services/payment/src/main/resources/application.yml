@@ -32,5 +32,5 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        spring.json.type.mapping: paymentConfirmation:c.example.aibouauth.payment.notification.PaymentNotificationRequest
+        spring.json.type.mapping: paymentConfirmation:com.example.aibouauth.payment.notification.PaymentNotificationRequest
 
