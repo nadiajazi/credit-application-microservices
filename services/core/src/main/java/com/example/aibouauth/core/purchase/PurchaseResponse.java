@@ -4,12 +4,14 @@ import com.example.aibouauth.core.product.ProductPurchaseResponse;
 import com.example.aibouauth.core.user.UserResponse;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record PurchaseResponse(
         Integer id,
         BigDecimal amount,
         UserResponse userResponse,
-        List<ProductPurchaseResponse> products
+        List<ProductPurchaseResponse> products,
+        LocalDateTime createdDate
 ) {
 }

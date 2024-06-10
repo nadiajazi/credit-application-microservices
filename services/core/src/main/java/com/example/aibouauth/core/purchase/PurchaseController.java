@@ -25,15 +25,15 @@ public class PurchaseController {
     private static final Logger logger = LoggerFactory.getLogger(PurchaseController.class);
 
 
-    @GetMapping("/admin")
+    @GetMapping("/admin/allpurchases")
     public ResponseEntity<List<PurchaseResponse>> findAll() {
         return ResponseEntity.ok(this.purchaseService.findAllPurchases());
     }
 
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<Purchase>> getClientPurchases(@PathVariable Integer clientId) {
+    public ResponseEntity<List<PurchaseResponse>> getClientPurchases(@PathVariable Integer clientId) {
         User client = userService.getUserById(clientId);
-        List<Purchase> purchases = purchaseService.getUserPurchases(client);
+        List<PurchaseResponse> purchases = purchaseService.getUserPurchases(client);
         return ResponseEntity.ok(purchases);
     }
 

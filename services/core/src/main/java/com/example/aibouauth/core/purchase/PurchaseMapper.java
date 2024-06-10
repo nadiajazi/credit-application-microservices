@@ -2,6 +2,7 @@ package com.example.aibouauth.core.purchase;
 
 import com.example.aibouauth.core.exception.BusinessException;
 import com.example.aibouauth.core.product.Product;
+import com.example.aibouauth.core.product.ProductPurchaseRequest;
 import com.example.aibouauth.core.product.ProductPurchaseResponse;
 import com.example.aibouauth.core.product.ProductRepository;
 import com.example.aibouauth.core.user.UserRepository;
@@ -24,7 +25,7 @@ public class PurchaseMapper {
             return null;
         }
 
-        var user = userRepository.findUserByEmail(request.email())
+        var user = userRepository.findUserById(request.userId())
                 .orElseThrow(() -> new BusinessException("User not found"));
 
         List<Product> products = request.products().stream()
@@ -52,20 +53,21 @@ public class PurchaseMapper {
                 .map(product -> new ProductPurchaseResponse(
                         product.getId(),
                         product.getName(),
-                        product.getPrice(),
-                        product.getQuantity()
+                        product.getPrice()
                 ))
-                .toList();
+                .collect(Collectors.toList());
+
         UserResponse userResponse = new UserResponse(
                 purchase.getUser().getUsername(),
                 purchase.getUser().getPhone()
         );
+
         return new PurchaseResponse(
                 purchase.getId(),
                 purchase.getTotalAmount(),
                 userResponse,
-                productResponses
-
+                productResponses,
+                purchase.getCreatedDate()
         );
     }
 }

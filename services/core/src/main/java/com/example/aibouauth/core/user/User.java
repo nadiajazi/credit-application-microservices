@@ -25,7 +25,6 @@ public class User implements UserDetails {
     @GeneratedValue
     private Integer id;
     private String firstName;
-
     private String lastName;
     private  String email;
     private  String password;
@@ -53,10 +52,11 @@ public class User implements UserDetails {
         return password;
     }
 
+
+
     @Override
     public String getUsername() {
-        return email;
-    }
+        return email;  }
 
     @Override
     public boolean isAccountNonExpired() {

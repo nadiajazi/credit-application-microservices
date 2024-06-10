@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +55,17 @@ public class PaymentService {
         payment = repository.save(payment);
 
         return payment.getId();
+    }
+
+    public List<PaymentResponse> getUserPayments(Integer userId) {
+        return repository.findByUserId(userId).stream()
+                .map(mapper::fromPayment)
+                .collect(Collectors.toList());
+    }
+
+    public List<PaymentResponse> getAllPayments() {
+        return repository.findAll().stream()
+                .map(mapper::fromPayment)
+                .collect(Collectors.toList());
     }
 }

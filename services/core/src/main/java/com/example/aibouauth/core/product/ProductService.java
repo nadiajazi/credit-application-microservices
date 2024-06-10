@@ -19,21 +19,21 @@ public class ProductService {
     public List<ProductPurchaseResponse> purchaseProducts(
             List<ProductPurchaseRequest> request
     ) {
-        // Extract product names from the request
+
         var productNames = request
                 .stream()
                 .map(ProductPurchaseRequest::productName)
                 .toList();
 
-        // Fetch products by names
+
         var storedProducts = repository.findAllByNameInOrderByName(productNames);
 
-        // Check if all requested products exist
+
         if (productNames.size() != storedProducts.size()) {
             throw new ProductPurchaseException("One or more products does not exist");
         }
 
-        // Sort the request by product names
+
         var sortedRequest = request
                 .stream()
                 .sorted(Comparator.comparing(ProductPurchaseRequest::productName))
@@ -45,17 +45,17 @@ public class ProductService {
             var product = storedProducts.get(i);
             var productRequest = sortedRequest.get(i);
 
-            // Check if sufficient stock is available
+
             if (product.getQuantity() < productRequest.quantity()) {
                 throw new ProductPurchaseException("Insufficient stock quantity for product with name: " + productRequest.productName());
             }
 
-            // Update product quantity
+
             var newAvailableQuantity = product.getQuantity() - productRequest.quantity();
             product.setQuantity(newAvailableQuantity);
             repository.save(product);
 
-            // Map to response
+
             purchasedProducts.add(mapper.toProductPurchaseResponse(product));
         }
 

@@ -35,15 +35,16 @@ public class PurchaseService {
 
     private static final Logger log = LoggerFactory.getLogger(PurchaseService.class);
 
-    public List<Purchase> getUserPurchases(User user) {
-        return purchaseRepository.findByUser(user);
+    public List<PurchaseResponse> getUserPurchases(User user) {
+        return purchaseRepository.findByUser(user).stream()
+                .map(mapper::fromPurchase)
+                .collect(Collectors.toList());
     }
-
     @Transactional
     public Integer createPurchase(PurchaseRequest request) {
 
-        var customer = userRepository.findUserByEmail(request.email())
-                .orElseThrow(() -> new BusinessException("Cannot create order:: No customer exists with the provided ID"));
+        var customer = userRepository.findUserById(request.userId())
+                .orElseThrow(() -> new BusinessException("Cannot create order: No customer exists with the provided ID"));
 
         BigDecimal totalAmount = BigDecimal.ZERO;
 
@@ -51,8 +52,6 @@ public class PurchaseService {
         Purchase purchase = mapper.toPurchase(request);
         purchase.setUser(customer);
         purchase.setCreatedDate(LocalDateTime.now());
-
-        var productRequest = request.products();
 
         for (ProductPurchaseRequest productPurchaseRequest : request.products()) {
             var product = productRepository.findByName(productPurchaseRequest.productName());
@@ -68,7 +67,7 @@ public class PurchaseService {
             product.setQuantity(availableQuantity - productPurchaseRequest.quantity());
             productRepository.save(product);
 
-            // Add the product to the purchase
+            // Add the product to the purchase with the requested quantity
             purchase.addProduct(product);
         }
 
@@ -78,24 +77,18 @@ public class PurchaseService {
         // Update the user's total amount
         userService.updateMontant(customer, totalAmount);
 
+        purchaseProducer.sendPurchaseConfirmation(
+                new PurchaseConfirmation(
+                        purchase.getTotalAmount(),
+                        customer.getUsername(),
+                        customer.getEmail(),
+                        request.products()
+                )
+        );
 
-
-
-           purchaseProducer.sendPurchaseConfirmation(
-                   new PurchaseConfirmation(
-                   purchase.getTotalAmount(),
-                   customer.getUsername(),
-                   customer.getEmail(),
-                   productRequest
-           )
-           );
-
-
-          purchaseRepository.save(purchase);
+        purchaseRepository.save(purchase);
 
         return purchase.getId();
-
-
     }
 
     public List<PurchaseResponse> findAllPurchases() {

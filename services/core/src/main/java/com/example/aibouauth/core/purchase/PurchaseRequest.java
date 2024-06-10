@@ -13,9 +13,9 @@ import java.util.List;
 public record PurchaseRequest(
 
         @NotNull(message = "Customer should be present")
-        @Email(message = "email should be present")
 
-        String email,
+
+        Integer userId,
         @NotEmpty(message = "You should at least purchase one product")
         List<ProductPurchaseRequest> products
 ) {
