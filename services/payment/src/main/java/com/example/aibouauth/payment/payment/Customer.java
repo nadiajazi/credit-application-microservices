@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 public record Customer(
-        String id,
+        Integer id,
         @NotNull(message = "Firstname is required")
         String firstName,
         @NotNull(message = "Lastname is required")
@@ -15,4 +15,7 @@ public record Customer(
         @NotNull(message = "Email is required")
         @Email(message = "The customer email is not correctly formatted")
         String email
-) { }
+
+) {
+
+}

@@ -33,8 +33,8 @@ public class PaymentController {
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<List<PaymentResponse>> getAllPayments() {
-        List<PaymentResponse> payments = service.getAllPayments();
+    public ResponseEntity<List<PaymentResponseAdmin>> getAllPayments(@RequestHeader("Authorization") String authHeader) {
+        List<PaymentResponseAdmin> payments = service.getAllPayments(authHeader);
         return ResponseEntity.ok(payments);
     }
 }

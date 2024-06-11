@@ -1,10 +1,9 @@
 package com.example.aibouauth.payment.client;
 
+import com.example.aibouauth.payment.payment.Customer;
+import com.example.aibouauth.payment.payment.CustomerResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -17,6 +16,9 @@ public interface UserClient {
     Integer findUserIdByToken(
             @RequestHeader("Authorization") String authHeader
     );
+
+    @GetMapping("/user/{id}")
+    CustomerResponse getUserById(@RequestHeader("Authorization") String authHeader, @PathVariable("id") Integer id);
 
     @GetMapping("/user/montant")
     BigDecimal getUserMontant(

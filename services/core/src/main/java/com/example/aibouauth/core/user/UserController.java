@@ -73,6 +73,15 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<CustomerResponse> getUserById(@RequestHeader("Authorization") String authHeader, @PathVariable("id") Integer id) {
+        User user = service.getUserById(id);
+        if (user != null) {
+            return ResponseEntity.ok(CustomerResponse.fromEntity(user));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 }

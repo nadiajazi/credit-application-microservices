@@ -63,9 +63,22 @@ public class PaymentService {
                 .collect(Collectors.toList());
     }
 
-    public List<PaymentResponse> getAllPayments() {
+
+
+    public List<PaymentResponseAdmin> getAllPayments(String authHeader) {
         return repository.findAll().stream()
-                .map(mapper::fromPayment)
+                .map(payment -> {
+                    PaymentResponseAdmin response = mapper.fromPaymentToAdmin(payment);
+                    CustomerResponse customer = userClient.getUserById(authHeader, payment.getUserId());
+                    response = new PaymentResponseAdmin(
+                            response.id(),
+                            response.amount(),
+                            response.paymentMethod(),
+                            response.createdDate(),
+                            customer
+                    );
+                    return response;
+                })
                 .collect(Collectors.toList());
     }
 }
