@@ -3,6 +3,7 @@ package com.example.aibouauth.core.product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,15 +13,17 @@ import java.util.List;
 
 public class ProductController {
 
-    @Autowired
-    private ProductRepository repository;
+
+    private final ProductRepository repository;
+    private final ProductService productService;
+
 
 
 
     @PostMapping("/product")
-
-    Product newProduct(@RequestBody Product newProduct){
-        return repository.save(newProduct);
+    public ResponseEntity<Integer> createProduct(@RequestBody ProductRequest request) {
+        Integer productId = productService.createProduct(request);
+        return ResponseEntity.ok(productId);
     }
     @GetMapping("/Products")
     List<Product>getAllProducts(){
@@ -32,14 +35,14 @@ public class ProductController {
                 .orElseThrow(()-> new ProductNotFoundException(id));
     }
     @PutMapping("/Product/{id}")
-    Product updateProduct(@RequestBody Product newProduct,@PathVariable Integer id){
+    Product updateProduct(@RequestBody ProductRequest newProduct,@PathVariable Integer id){
         return repository.findById(id)
                 .map(product -> {
-                    product.setRef(newProduct.getRef());
-                    product.setName(newProduct.getName());
-                    product.setPrice(newProduct.getPrice());
-                    product.setImages(newProduct.getImages());
-                    product.setQuantity(newProduct.getQuantity());
+                    product.setRef(newProduct.ref());
+                    product.setName(newProduct.name());
+                    product.setPrice(newProduct.price());
+                    product.setImages(newProduct.images());
+                    product.setQuantity(newProduct.quantity());
                return  repository.save(product);
                 }).orElseThrow(()-> new ProductNotFoundException(id));
     }

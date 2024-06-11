@@ -1,5 +1,6 @@
 package com.example.aibouauth.core.product;
 
+import com.example.aibouauth.core.product.ProductRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,12 @@ public class ProductService {
 
     private final ProductRepository repository;
     private final ProductMapper mapper;
-
+    @Transactional
+    public Integer createProduct(ProductRequest request) {
+        Product product = mapper.toProduct(request);
+        Product savedProduct = repository.save(product);
+        return savedProduct.getId();
+    };
     @Transactional
     public List<ProductPurchaseResponse> purchaseProducts(
             List<ProductPurchaseRequest> request

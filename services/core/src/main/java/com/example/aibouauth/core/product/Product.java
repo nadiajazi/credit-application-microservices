@@ -20,7 +20,7 @@ import java.util.Set;
 public class Product {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private BigDecimal price;
@@ -32,8 +32,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    @Transient
-    private int purchasedQuantity;
+
 
 
 

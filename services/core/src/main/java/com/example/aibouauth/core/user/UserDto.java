@@ -25,6 +25,7 @@ public class UserDto {
 
 
 
+
     // Convert User entity to UserDTO
     public static UserDto fromEntity(User user) {
         return new UserDto(
