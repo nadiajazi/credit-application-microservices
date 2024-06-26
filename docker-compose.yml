@@ -1,4 +1,110 @@
 services:
+  config-server:
+    image: jazinadia11/config-server:latest
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=native
+    networks:
+      - microservices-net
+
+  discovery:
+    image: jazinadia11/discovery:latest
+    container_name: discovery
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-server:8888
+    depends_on:
+      - config-server
+    networks:
+      - microservices-net
+
+  notification:
+    image: jazinadia11/notification:latest
+    container_name: notification
+    ports:
+      - "8040:8040"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/notification
+      - SPRING_DATASOURCE_USERNAME=nadia
+      - SPRING_DATASOURCE_PASSWORD=nadia
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_MAIL_HOST=mail
+      - SPRING_MAIL_PORT=1025
+      - SPRING_MAIL_USERNAME=nadia
+      - SPRING_MAIL_PASSWORD=nadia
+    depends_on:
+      - config-server
+      - discovery
+      - mysql
+      - kafka
+      - mail-dev
+    networks:
+        - microservices-net
+  payment:
+    image: jazinadia11/payment:latest
+    container_name: payment
+    ports:
+     - "8090:8090"
+    environment:
+     - SPRING_PROFILES_ACTIVE=docker
+     - CONFIG_SERVER_URL=http://config-server:8888
+     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+     - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/payment
+     - SPRING_DATASOURCE_USERNAME=nadia
+     - SPRING_DATASOURCE_PASSWORD=nadia
+     - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+     - config-server
+     - discovery
+     - mysql
+     - kafka
+    networks:
+     - microservices-net
+
+  core:
+    image: jazinadia11/core:latest
+    container_name: core
+    ports:
+      - "8060:8060"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/main
+      - SPRING_DATASOURCE_USERNAME=nadia
+      - SPRING_DATASOURCE_PASSWORD=nadia
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - PAYMENT_URL=http://payment:8090/api/v1/payment
+    depends_on:
+      - config-server
+      - discovery
+      - mysql
+      - kafka
+      - payment
+    networks:
+      - microservices-net
+
+  gateway:
+    image: jazinadia11/gateway:latest
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+    depends_on:
+      - config-server
+      - discovery
+    networks:
+      - microservices-net
   postgres:
     container_name: ms_pg_sql
     image: postgres:latest
