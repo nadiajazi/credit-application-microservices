@@ -1,9 +1,9 @@
 eureka:
   instance:
-    hostname: localhost
+    hostname: core
   client:
     service-url:
-      defaultZone : http://localhost:8761/eureka
+      defaultZone: http://discovery:8761/eureka
 server:
   port: 8060
   error:
@@ -13,12 +13,11 @@ spring:
   application:
     name: core
     configuration:
-     payment-url: http://localhost:8090/api/v1/payment
+      payment-url: http://payment:8090/api/v1/payment
   config:
-    import: optional:configserver:http://localhost:8888
-
+    import: optional:configserver:http://config-server:8888
   datasource:
-    url: jdbc:mysql://localhost:3308/main
+    url: jdbc:mysql://mysql:3306/main
     username: nadia
     password: nadia
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -29,22 +28,19 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-
         format_sql: true
     database: mysql
   kafka:
     producer:
-      bootstrap-servers: localhost:29092
+      bootstrap-servers: kafka:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.type.mapping: purchaseConfirmation:com.example.aibouauth.core.kafka.PurchaseConfirmation
-application :
+application:
   security:
     jwt:
-      secret-key : 3e58950f9b875dddf66b25bd1b846e78c8c2bb923ee8cbd7f72695aefb626be3
-      expiration : 8640000000000000000
-      refresh-token :
-        expiration : 60480000000000000
-
-
+      secret-key: 3e58950f9b875dddf66b25bd1b846e78c8c2bb923ee8cbd7f72695aefb626be3
+      expiration: 8640000000000000000
+      refresh-token:
+        expiration: 60480000000000000

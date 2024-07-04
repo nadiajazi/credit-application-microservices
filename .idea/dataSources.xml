@@ -29,7 +29,7 @@
       <jdbc-url>jdbc:mysql://localhost:3308/core</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="main@localhost" uuid="ba62ff13-3506-403e-a8c3-eaf5f6635ee2">
+    <data-source source="LOCAL" name="main@localhost" uuid="cea458ad-4bae-4be7-b72c-f308476fe36b">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

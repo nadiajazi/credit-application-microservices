@@ -31,42 +31,47 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_URL=http://config-server:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/notification
+      - SPRING_DATASOURCE_URL=jdbc:mysql://ms_my_sql:3306/notification
       - SPRING_DATASOURCE_USERNAME=nadia
       - SPRING_DATASOURCE_PASSWORD=nadia
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - SPRING_MAIL_HOST=mail
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092
+      - SPRING_MAIL_HOST=ms_mail_dev
       - SPRING_MAIL_PORT=1025
       - SPRING_MAIL_USERNAME=nadia
       - SPRING_MAIL_PASSWORD=nadia
     depends_on:
       - config-server
       - discovery
-      - mysql
+      - ms_my_sql
       - kafka
-      - mail-dev
+      - ms_mail_dev
+      - core
+      - payment
     networks:
-        - microservices-net
+      - microservices-net
+
   payment:
     image: jazinadia11/payment:latest
     container_name: payment
     ports:
-     - "8090:8090"
+      - "8090:8090"
     environment:
-     - SPRING_PROFILES_ACTIVE=docker
-     - CONFIG_SERVER_URL=http://config-server:8888
-     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
-     - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/payment
-     - SPRING_DATASOURCE_USERNAME=nadia
-     - SPRING_DATASOURCE_PASSWORD=nadia
-     - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_PROFILES_ACTIVE=docker
+      - CONFIG_SERVER_URL=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ms_pg_sql:5432/payment
+      - SPRING_DATASOURCE_USERNAME=nadia
+      - SPRING_DATASOURCE_PASSWORD=nadia
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092
+      - SPRING_APPLICATION_CONFIGURATION_USER_URL=http://core:8060/api/v1
     depends_on:
-     - config-server
-     - discovery
-     - mysql
-     - kafka
+      - config-server
+      - discovery
+      - ms_pg_sql
+      - kafka
+      - core
     networks:
-     - microservices-net
+      - microservices-net
 
   core:
     image: jazinadia11/core:latest
@@ -77,17 +82,16 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_URL=http://config-server:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/main
+      - SPRING_DATASOURCE_URL=jdbc:mysql://ms_my_sql:3306/main
       - SPRING_DATASOURCE_USERNAME=nadia
       - SPRING_DATASOURCE_PASSWORD=nadia
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092
       - PAYMENT_URL=http://payment:8090/api/v1/payment
     depends_on:
       - config-server
       - discovery
-      - mysql
+      - ms_my_sql
       - kafka
-      - payment
     networks:
       - microservices-net
 
@@ -95,7 +99,7 @@ services:
     image: jazinadia11/gateway:latest
     container_name: gateway
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_URL=http://config-server:8888
@@ -105,7 +109,18 @@ services:
       - discovery
     networks:
       - microservices-net
-  postgres:
+
+  frontend:
+    build:
+      context: C:/Users/asus/Desktop/CreditApplication/FrontEnd/creditapplication
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80"
+    networks:
+      - microservices-net
+
+  ms_pg_sql:
     container_name: ms_pg_sql
     image: postgres:latest
     environment:
@@ -114,13 +129,14 @@ services:
       POSTGRES_DB: payment
       PGDATA: /var/lib/postgresql/data
     volumes:
-      - postgres:/var/lib/postgres/data
+      - postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
       - microservices-net
     restart: unless-stopped
-  mysql:
+
+  ms_my_sql:
     container_name: ms_my_sql
     image: mysql:latest
     environment:
@@ -139,6 +155,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -149,9 +166,11 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:latest
+    container_name: kafka
     depends_on:
       - zookeeper
     ports:
+      - 9092:9092
       - 29092:29092
     environment:
       KAFKA_BROKER_ID: 1
@@ -163,17 +182,29 @@ services:
       KAFKA_CREATE_TOPICS: "news:1:3"
       KAFKA_OFFSETS_RETENTION_MINUTES: 60
     networks:
-      microservices-net:
+      - microservices-net
 
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    depends_on:
+      - kafka
+    ports:
+      - "8033:9000"
+    environment:
+      KAFKA_BROKER_CONNECT: PLAINTEXT://kafka:9092
+      JVM_OPTS: "-Xms32M -Xmx64M"
+    networks:
+      - microservices-net
 
-
-  mail-dev:
+  ms_mail_dev:
     container_name: ms_mail_dev
     image: maildev/maildev
     ports:
       - 1080:1080
       - 1025:1025
-
+    networks:
+      - microservices-net
 
 networks:
   microservices-net:
