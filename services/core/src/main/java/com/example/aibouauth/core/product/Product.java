@@ -33,10 +33,23 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    public Product(Integer id, String name, BigDecimal price, String images, String ref, Integer quantity) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.images = images;
+        this.ref = ref;
+        this.quantity = quantity;
+    }
 
+    public Product(String name, BigDecimal price, String images, String ref, int quantity) {
 
-
-
+        this.name = name;
+        this.price = price;
+        this.images = images;
+        this.ref = ref;
+        this.quantity = quantity;
+    }
 }
 
 

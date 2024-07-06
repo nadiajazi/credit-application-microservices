@@ -11,7 +11,7 @@ public class ProductMapper {
 
     public Product toProduct(ProductRequest request) {
         if (request == null) {
-            return null;
+           throw new NullPointerException("the product request should not be null");
         }
 
 
