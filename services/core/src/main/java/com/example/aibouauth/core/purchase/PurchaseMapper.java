@@ -5,12 +5,14 @@ import com.example.aibouauth.core.product.Product;
 import com.example.aibouauth.core.product.ProductPurchaseRequest;
 import com.example.aibouauth.core.product.ProductPurchaseResponse;
 import com.example.aibouauth.core.product.ProductRepository;
+import com.example.aibouauth.core.user.User;
 import com.example.aibouauth.core.user.UserRepository;
 import com.example.aibouauth.core.user.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,27 +24,37 @@ public class PurchaseMapper {
 
     public Purchase toPurchase(PurchaseRequest request) {
         if (request == null) {
+            // Optionally handle null request gracefully or throw IllegalArgumentException
             return null;
         }
 
-        var user = userRepository.findUserById(request.userId())
-                .orElseThrow(() -> new BusinessException("User not found"));
+        Optional<User> userOptional = userRepository.findUserById(request.userId());
+        if (userOptional.isEmpty()) {
+            // Optionally return a default Purchase or throw an exception
+            return null;
+        }
+        User user = userOptional.get();
 
         List<Product> products = request.products().stream()
                 .map(productRequest -> {
                     Product product = productRepository.findByName(productRequest.productName());
-                    if (product == null) {
-                        throw new BusinessException("Product not found: " + productRequest.productName());
-                    }
-                    return product;
+                    return Optional.ofNullable(product);
                 })
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
+
+        if (products.size() != request.products().size()) {
+            // Optionally return a default Purchase or throw an exception
+            return null;
+        }
 
         return Purchase.builder()
                 .user(user)
                 .products(products)
                 .build();
     }
+
 
     public PurchaseResponse fromPurchase(Purchase purchase) {
         if (purchase == null) {

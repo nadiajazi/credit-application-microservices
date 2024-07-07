@@ -42,6 +42,15 @@ public class User implements UserDetails {
     @JsonManagedReference
     private List<Purchase> purchases;
 
+    public User(int id, String firstName, String email, String phone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.email = email;
+        this.phone = phone;
+
+    }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role .getAuthorities();
