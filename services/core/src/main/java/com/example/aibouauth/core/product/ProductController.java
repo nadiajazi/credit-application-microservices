@@ -52,6 +52,6 @@ public class ProductController {
             throw  new ProductNotFoundException(id);
         }
         repository.deleteById(id);
-        return "Product with id "+id+ "has been deleted success";
+        return "Product with id "+id+ " has been deleted success";
     }
 }

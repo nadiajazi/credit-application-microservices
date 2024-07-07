@@ -10,8 +10,8 @@
         <module name="notification" />
         <module name="config-server" />
         <module name="core" />
-        <module name="discovery" />
         <module name="payment" />
+        <module name="discovery" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
@@ -22,12 +22,12 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="aibouauth" options="-parameters" />
-      <module name="config-server" options="-parameters" />
+      <module name="config-server" options="" />
       <module name="core" options="-parameters" />
-      <module name="discovery" options="-parameters" />
-      <module name="gateway" options="-parameters" />
-      <module name="notification" options="-parameters" />
-      <module name="payment" options="-parameters" />
+      <module name="discovery" options="" />
+      <module name="gateway" options="" />
+      <module name="notification" options="" />
+      <module name="payment" options="" />
     </option>
   </component>
 </project>

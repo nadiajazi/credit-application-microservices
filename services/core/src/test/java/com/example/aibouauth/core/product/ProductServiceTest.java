@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -24,6 +26,7 @@ class ProductServiceTest {
 
     @Mock
     private ProductMapper mapper;
+
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
@@ -73,6 +76,9 @@ class ProductServiceTest {
         verify(repository, times(1)).save(product);
         verify(mapper, times(1)).toProductPurchaseResponse(savedProduct);
     }
+
+
+
 
 
 };
