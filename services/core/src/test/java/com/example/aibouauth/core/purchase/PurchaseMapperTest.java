@@ -1,25 +1,20 @@
 package com.example.aibouauth.core.purchase;
 
-import com.example.aibouauth.core.exception.BusinessException;
 import com.example.aibouauth.core.product.Product;
 import com.example.aibouauth.core.product.ProductPurchaseRequest;
-import com.example.aibouauth.core.product.ProductPurchaseResponse;
 import com.example.aibouauth.core.product.ProductRepository;
 import com.example.aibouauth.core.user.User;
 import com.example.aibouauth.core.user.UserRepository;
-import com.example.aibouauth.core.user.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class PurchaseMapperTest {

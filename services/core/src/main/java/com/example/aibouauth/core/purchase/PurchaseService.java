@@ -43,6 +43,7 @@ public class PurchaseService {
     @Transactional
     public Integer createPurchase(PurchaseRequest request) {
 
+
         var customer = userRepository.findUserById(request.userId())
                 .orElseThrow(() -> new BusinessException("Cannot create order: No customer exists with the provided ID"));
 
