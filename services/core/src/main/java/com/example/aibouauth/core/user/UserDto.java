@@ -26,7 +26,6 @@ public class UserDto {
 
 
 
-    // Convert User entity to UserDTO
     public static UserDto fromEntity(User user) {
         return new UserDto(
                 user.getId(),
@@ -41,7 +40,7 @@ public class UserDto {
 
     }
 
-    // Convert a list of User entities to a list of UserDTOs
+
     public static List<UserDto> fromEntityList(List<User> users) {
         return users.stream().map(UserDto::fromEntity).toList();
     }

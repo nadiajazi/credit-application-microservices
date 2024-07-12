@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
     private final UsersService service;
-    private final UserRepository userRepository;
+
 
     @PatchMapping
     public ResponseEntity<?> changePassword(

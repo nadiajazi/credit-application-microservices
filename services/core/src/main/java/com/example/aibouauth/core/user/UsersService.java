@@ -24,18 +24,18 @@ public class UsersService {
 
         var user = ((User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal());
 
-        //check if the current password is correct
-        if (passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
             throw new IllegalStateException("Wrong password");
         }
-        //check if the two new password are the same
+
         if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
 
-            throw new IllegalStateException("Password are not the same ");
+            throw new IllegalStateException("Passwords are not the same ");
         }
-        // update the password
+
         user.setPassword(passwordEncoder.encode((request.getNewPassword())));
-        //save the new password
+
         repository.save(user);
     }
 
@@ -61,13 +61,13 @@ public class UsersService {
     }
 
 
-    public User updateMaxAmount(UserDto newUser, Integer id) {
-        return repository.findById(id)
-                .map(user->{
+    public void updateMaxAmount(UserDto newUser, Integer id) {
+        repository.findById(id)
+                .map(user -> {
                     user.setMaxAmount(newUser.getMaxAmount());
                     return repository.save(user);
                 })
-                .orElseThrow(()->new UserNotFoundException(id));
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
 
@@ -77,7 +77,6 @@ public class UsersService {
         tokenRepository.deleteByUserId(id);
 
 
-        // Then delete the user
         repository.deleteById(id);
     }
 
