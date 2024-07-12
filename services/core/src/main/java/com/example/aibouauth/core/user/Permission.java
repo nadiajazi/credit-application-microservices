@@ -3,6 +3,7 @@ package com.example.aibouauth.core.user;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum Permission {
 
@@ -25,6 +26,5 @@ public enum Permission {
     MANAGER_DELETE("  MANAGER:delete")
     ;
 
-@Getter
-    private  final  String permission;
+private  final  String permission;
 }
