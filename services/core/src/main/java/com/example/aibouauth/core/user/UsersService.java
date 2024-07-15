@@ -22,6 +22,7 @@ public class UsersService {
 
     public void changePassword(changePasswordRequest request, Principal connectedUser) {
 
+
         var user = ((User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal());
 
 
@@ -29,7 +30,7 @@ public class UsersService {
             throw new IllegalStateException("Wrong password");
         }
 
-        if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
+        if (!passwordEncoder.matches(request.getNewPassword(), request.getConfirmationPassword())) {
 
             throw new IllegalStateException("Passwords are not the same ");
         }

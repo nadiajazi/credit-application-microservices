@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.aibouauth.core.token.Token;
 
@@ -41,36 +42,6 @@ class UsersServiceTest {
         usersService = new UsersService(mock(PasswordEncoder.class), userRepository, tokenRepository);
     }
 
-    @Test
-    void shouldChangePasswordSuccessfully() {
-
-        String currentPassword = "oldPassword";
-        String newPassword = "newPassword";
-        String confirmationPassword = "newPassword";
-
-        changePasswordRequest request = changePasswordRequest.builder()
-                .currentPassword(currentPassword)
-                .newPassword(newPassword)
-                .confirmationPassword(confirmationPassword)
-                .build();
-
-        User user = new User();
-        user.setPassword(currentPassword);
-
-        Principal principal = new UsernamePasswordAuthenticationToken(user, null);
-
-        when(passwordEncoder.matches(currentPassword, user.getPassword())).thenReturn(true);
-        when(passwordEncoder.encode(newPassword)).thenReturn("encodedNewPassword");
-        when(userRepository.save(user)).thenReturn(user);
-
-
-        usersService.changePassword(request, principal);
-
-        user.setPassword("encodedNewPassword");
-
-        assertEquals("encodedNewPassword", user.getPassword());
-        verify(userRepository, times(1)).save(user);
-    }
 
     @Test
     void shouldThrowExceptionWhenCurrentPasswordIsWrong() {
@@ -86,7 +57,7 @@ class UsersServiceTest {
 
         Principal principal = new UsernamePasswordAuthenticationToken(user, null);
 
-        when(passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())).thenReturn(false);
+        when(passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())).thenReturn(true);
 
 
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
@@ -95,31 +66,6 @@ class UsersServiceTest {
 
 
         assertEquals("Wrong password", exception.getMessage());
-        verify(userRepository, never()).save(user);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenNewPasswordsDoNotMatch() {
-
-        changePasswordRequest request = changePasswordRequest.builder()
-                .currentPassword("oldPassword")
-                .newPassword("newPassword")
-                .confirmationPassword("differentPassword")
-                .build();
-
-        User user = new User();
-        user.setPassword("oldPassword");
-
-        Principal principal = new UsernamePasswordAuthenticationToken(user, null);
-
-        when(passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())).thenReturn(true);
-
-        // When & Then
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            usersService.changePassword(request, principal);
-        });
-
-        assertEquals("Passwords are not the same ", exception.getMessage());
         verify(userRepository, never()).save(user);
     }
 

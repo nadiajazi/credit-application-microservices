@@ -24,13 +24,11 @@ public class PurchaseMapper {
 
     public Purchase toPurchase(PurchaseRequest request) {
         if (request == null) {
-            // Optionally handle null request gracefully or throw IllegalArgumentException
-            return null;
+            throw new NullPointerException("the purchase request should not be null");
         }
 
         Optional<User> userOptional = userRepository.findUserById(request.userId());
         if (userOptional.isEmpty()) {
-            // Optionally return a default Purchase or throw an exception
             return null;
         }
         User user = userOptional.get();
@@ -45,7 +43,6 @@ public class PurchaseMapper {
                 .collect(Collectors.toList());
 
         if (products.size() != request.products().size()) {
-            // Optionally return a default Purchase or throw an exception
             return null;
         }
 
@@ -58,7 +55,8 @@ public class PurchaseMapper {
 
     public PurchaseResponse fromPurchase(Purchase purchase) {
         if (purchase == null) {
-            return null;
+            throw new NullPointerException("the purchase request should not be null");
+
         }
 
         List<ProductPurchaseResponse> productResponses = purchase.getProducts().stream()

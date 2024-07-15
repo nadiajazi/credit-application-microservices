@@ -26,8 +26,8 @@
       <module name="core" options="-parameters" />
       <module name="discovery" options="" />
       <module name="gateway" options="" />
-      <module name="notification" options="" />
-      <module name="payment" options="" />
+      <module name="notification" options="-parameters" />
+      <module name="payment" options="-parameters" />
     </option>
   </component>
 </project>

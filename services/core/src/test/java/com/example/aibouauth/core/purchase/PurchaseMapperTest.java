@@ -96,8 +96,5 @@ class PurchaseMapperTest {
         assertEquals("Laptop", response.products().get(0).name());
     }
 
-    @Test
-    void shouldReturnNullWhenPurchaseIsNull() {
-        assertNull(mapper.fromPurchase(null));
-    }
+
 }
