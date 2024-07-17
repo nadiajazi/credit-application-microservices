@@ -3,7 +3,7 @@ eureka:
     hostname: core
   client:
     service-url:
-      defaultZone: http://discovery:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 server:
   port: 8060
   error:
@@ -13,9 +13,9 @@ spring:
   application:
     name: core
     configuration:
-      payment-url: http://payment:8090/api/v1/payment
+      payment-url: http://localhost:8090/api/v1/payment
   config:
-    import: optional:configserver:http://config-server:8888
+    import: optional:configserver:http://localhost:8888
   datasource:
     url: jdbc:mysql://localhost:3308/core
     username: nadia
@@ -32,7 +32,7 @@ spring:
     database: mysql
   kafka:
     producer:
-      bootstrap-servers: kafka:9092
+      bootstrap-servers: localhost:29092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:

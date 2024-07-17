@@ -10,11 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @SpringBootTest
+@TestPropertySource(properties = "spring.kafka.bootstrap-servers=kafka:9092")
 public class NotificationConsumerTest {
 
     @Mock
@@ -30,7 +32,7 @@ public class NotificationConsumerTest {
     public void testConsumePurchaseConfirmationNotifications() throws Exception {
         // Arrange
         PurchaseConfirmation confirmation = new PurchaseConfirmation(
-                new BigDecimal("100.00"), "testuser", "testuser@example.com", List.of()
+                new BigDecimal("100.00"), "nadiajazi", "jazinadia@gmail.com", List.of()
         );
 
         // Act
