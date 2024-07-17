@@ -44,7 +44,7 @@ class UsersServiceTest {
 
 
     @Test
-    void shouldThrowExceptionWhenCurrentPasswordIsWrong() {
+    public void shouldThrowExceptionWhenCurrentPasswordIsWrong() {
 
         changePasswordRequest request = changePasswordRequest.builder()
                 .currentPassword("wrongPassword")
@@ -70,7 +70,7 @@ class UsersServiceTest {
     }
 
     @Test
-    void shouldReturnAllUsers() {
+    public void shouldReturnAllUsers() {
         List<User> users = List.of(new User(), new User());
         when(userRepository.findAll()).thenReturn(users);
 
@@ -81,7 +81,7 @@ class UsersServiceTest {
     }
 
     @Test
-    void shouldReturnUserById() {
+    public void shouldReturnUserById() {
         User user = new User();
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
@@ -92,7 +92,7 @@ class UsersServiceTest {
     }
 
     @Test
-    void shouldUpdateMontant() {
+    public void shouldUpdateMontant() {
 
         User user = new User(1, "Nadia","Jazi", "jazinadia7@gmail.com", "28377510",0.00, BigDecimal.ZERO, Role.USER);
 
@@ -105,7 +105,7 @@ class UsersServiceTest {
     }
 
     @Test
-    void shouldUpdateMaxMontant() {
+    public void shouldUpdateMaxMontant() {
         double maxAmount = 1500.00;
         User user = new User(1, "Nadia","Jazi", "jazinadia7@gmail.com", "28377510",0.00, BigDecimal.ZERO, Role.USER);
         UserDto userDto = new UserDto(1, "Nadia","Jazi", "jazinadia7@gmail.com", "28377510",maxAmount, BigDecimal.ZERO, Role.USER);
@@ -120,7 +120,7 @@ class UsersServiceTest {
     }
 
     @Test
-    void shouldDeleteUserById() {
+    public void shouldDeleteUserById() {
         doNothing().when(tokenRepository).deleteByUserId(1);
         doNothing().when(userRepository).deleteById(1);
 
@@ -131,7 +131,7 @@ class UsersServiceTest {
     }
 
     @Test
-    void shouldReturnUserIdByToken() {
+    public void shouldReturnUserIdByToken() {
         Token token = new Token();
         User user = new User();
         user.setId(1);
@@ -144,7 +144,7 @@ class UsersServiceTest {
     }
 
     @Test
-    void shouldReturnUserMontantByToken() {
+    public void shouldReturnUserMontantByToken() {
         Token token = new Token();
         User user = new User();
         user.setMontant(BigDecimal.valueOf(100));
@@ -157,7 +157,7 @@ class UsersServiceTest {
     }
 
     @Test
-    void shouldUpdateUserMontant() {
+    public void shouldUpdateUserMontant() {
         User user = new User();
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
 

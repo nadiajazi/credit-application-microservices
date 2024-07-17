@@ -82,7 +82,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_URL=http://config-server:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka
-      - SPRING_DATASOURCE_URL=jdbc:mysql://ms_my_sql:3306/main
+      - SPRING_DATASOURCE_URL=jdbc:mysql://ms_my_sql:3306/core
       - SPRING_DATASOURCE_USERNAME=nadia
       - SPRING_DATASOURCE_PASSWORD=nadia
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092

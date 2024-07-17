@@ -1,6 +1,7 @@
 package com.example.aibouauth.core.purchase;
 
 import com.example.aibouauth.core.exception.BusinessException;
+import com.example.aibouauth.core.kafka.PurchaseConfirmation;
 import com.example.aibouauth.core.kafka.PurchaseProducer;
 import com.example.aibouauth.core.product.Product;
 import com.example.aibouauth.core.product.ProductPurchaseRequest;
@@ -19,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,6 +42,7 @@ public class PurchaseServiceTest {
 
     @Mock
     private UsersService userService;
+
 
     @Mock
     private PurchaseMapper mapper;
@@ -113,5 +116,18 @@ public class PurchaseServiceTest {
         when(productRepository.findByName("Product")).thenReturn(product);
 
         assertThrows(NullPointerException.class, () -> purchaseService.createPurchase(request));
+    }
+
+    @Test
+    public void testSendPurchaseConfirmation() {
+
+        PurchaseConfirmation confirmation = new PurchaseConfirmation(
+                new BigDecimal("100.00"), "testuser", "testuser@example.com", List.of()
+        );
+
+        purchaseProducer.sendPurchaseConfirmation(confirmation);
+
+
+        verify(purchaseProducer, times(1)).sendPurchaseConfirmation(confirmation);
     }
 }

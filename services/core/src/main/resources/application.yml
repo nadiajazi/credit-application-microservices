@@ -17,7 +17,7 @@ spring:
   config:
     import: optional:configserver:http://config-server:8888
   datasource:
-    url: jdbc:mysql://mysql:3306/main
+    url: jdbc:mysql://localhost:3308/core
     username: nadia
     password: nadia
     driver-class-name: com.mysql.cj.jdbc.Driver
