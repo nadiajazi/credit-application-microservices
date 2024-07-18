@@ -30,15 +30,15 @@ public class NotificationConsumerTest {
 
     @Test
     public void testConsumePurchaseConfirmationNotifications() throws Exception {
-        // Arrange
+
         PurchaseConfirmation confirmation = new PurchaseConfirmation(
                 new BigDecimal("100.00"), "nadiajazi", "jazinadia@gmail.com", List.of()
         );
 
-        // Act
+
         notificationConsumer.consumePurchaseConfirmationNotifications(confirmation);
 
-        // Assert
+
         verify(repository, times(1)).save(any());
         verify(emailService, times(1)).sendPurchaseConfirmationEmail(
                 confirmation.totalAmount(), confirmation.customerName(), confirmation.email(), confirmation.products()
