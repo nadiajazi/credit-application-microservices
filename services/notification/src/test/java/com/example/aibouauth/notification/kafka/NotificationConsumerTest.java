@@ -4,6 +4,8 @@ import static org.mockito.Mockito.*;
 
 
 import com.example.aibouauth.notification.email.EmailService;
+import com.example.aibouauth.notification.kafka.payment.PaymentConfirmation;
+import com.example.aibouauth.notification.kafka.payment.PaymentMethod;
 import com.example.aibouauth.notification.notification.NotificationRepository;
 import com.example.aibouauth.notification.kafka.purchase.PurchaseConfirmation;
 import org.junit.jupiter.api.Test;
@@ -42,6 +44,27 @@ public class NotificationConsumerTest {
         verify(repository, times(1)).save(any());
         verify(emailService, times(1)).sendPurchaseConfirmationEmail(
                 confirmation.totalAmount(), confirmation.customerName(), confirmation.email(), confirmation.products()
+        );
+    }
+
+    @Test
+    public void testConsumePaymentConfirmationNotifications() throws Exception {
+
+        PaymentMethod paymentMethod = PaymentMethod.valueOf("CREDIT_CARD");
+
+        PaymentConfirmation confirmation = new PaymentConfirmation(
+                new BigDecimal("50.00"), paymentMethod, "Nadia","Jazi", "jazinadia7@gmail.com"
+        );
+
+
+
+        notificationConsumer.consumePaymentSuccessNotifications(confirmation);
+
+        String fullName = confirmation.customerFirstname() + " " + confirmation.customerLastname();
+
+        verify(repository, times(1)).save(any());
+        verify(emailService, times(1)).sendPaymentSuccessEmail(confirmation.customerEmail(),
+               fullName, confirmation.amount()
         );
     }
 }
