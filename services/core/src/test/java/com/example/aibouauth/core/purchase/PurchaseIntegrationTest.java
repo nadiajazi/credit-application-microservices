@@ -89,7 +89,7 @@ public class PurchaseIntegrationTest {
     }
 
     private static void cleanUpTemporaryFiles() throws Exception {
-        Path tempDir = Paths.get(System.getProperty("java.io.tmpdir"), "kafka-14727813405286885568");
+        Path tempDir = Paths.get(System.getProperty("java.io.tmpdir"), "kafka-" + System.nanoTime());
         if (Files.exists(tempDir)) {
             Files.walk(tempDir)
                     .sorted((path1, path2) -> path2.compareTo(path1)) // Reverse order to delete directories after files
@@ -105,6 +105,9 @@ public class PurchaseIntegrationTest {
 
     @Test
     public void testSendPurchaseMessage() throws InterruptedException {
+
+        assertThat(kafkaTemplate).isNotNull();
+
         PurchaseConfirmation confirmation = new PurchaseConfirmation(
                 new BigDecimal("100.00"), "testuser", "testuser@example.com", List.of()
         );
@@ -114,6 +117,7 @@ public class PurchaseIntegrationTest {
 
         // Assert that the message was sent to the topic
         ConsumerRecord<String, PurchaseConfirmation> singleRecord = KafkaTestUtils.getSingleRecord(consumer, "purchase-topic");
+        assertThat(singleRecord).isNotNull();
         assertThat(singleRecord.value()).isEqualTo(confirmation);
     }
 }
