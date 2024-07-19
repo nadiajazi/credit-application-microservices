@@ -55,11 +55,10 @@ public class PaymentServiceTest {
         when(userClient.findUserIdByToken(userToken)).thenReturn(userId);
         when(userClient.getUserMontant(userToken)).thenReturn(userMontant);
         when(paymentMapper.toPayment(request)).thenReturn(new Payment());
-        when(paymentRepository.save(any())).thenAnswer(invocation -> {
-            Payment savedPayment = invocation.getArgument(0);
-            savedPayment.setId(1);
-            return savedPayment;
-        });
+
+        Payment payment = new Payment();
+        payment.setId(1);
+        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
 
         // When
         Integer paymentId = paymentService.createPayment(request, userToken);
@@ -75,7 +74,7 @@ public class PaymentServiceTest {
 
     @Test
     void testCreatePayment_InsufficientMontant() {
-        // Given
+
         String userToken = "valid_token";
         PaymentRequest request = new PaymentRequest(
                 new BigDecimal("150.00"),
@@ -86,7 +85,7 @@ public class PaymentServiceTest {
 
         when(userClient.getUserMontant(userToken)).thenReturn(userMontant);
 
-        // When, Then
+
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> paymentService.createPayment(request, userToken));
         assertEquals("Payment amount exceeds the user's total amount.", exception.getMessage());
@@ -99,7 +98,7 @@ public class PaymentServiceTest {
 
     @Test
     void testGetAllPayments() {
-        // Given
+
         String authHeader = "Bearer test-token";
 
         Payment payment1 = new Payment();
@@ -143,10 +142,10 @@ public class PaymentServiceTest {
         when(paymentMapper.fromPaymentToAdmin(payment1, customerResponse1)).thenReturn(responseAdmin1);
         when(paymentMapper.fromPaymentToAdmin(payment2, customerResponse2)).thenReturn(responseAdmin2);
 
-        // When
+
         List<PaymentResponseAdmin> result = paymentService.getAllPayments(authHeader);
 
-        // Then
+
         assertEquals(2, result.size());
         assertEquals(responseAdmin1, result.get(0));
         assertEquals(responseAdmin2, result.get(1));

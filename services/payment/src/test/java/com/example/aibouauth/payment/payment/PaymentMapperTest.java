@@ -64,7 +64,7 @@ public class PaymentMapperTest {
         payment.setCreatedDate(LocalDateTime.now());
         payment.setUserId(12345);
 
-        CustomerResponse customer = new CustomerResponse(1, "John", "Doe", "john.doe@example.com", "28377510");
+        CustomerResponse customer = new CustomerResponse(1, "nadia", "jazi", "nadiajazi@gmail.com", "28377510");
 
         PaymentResponseAdmin paymentResponseAdmin = paymentMapper.fromPaymentToAdmin(payment, customer);
 
