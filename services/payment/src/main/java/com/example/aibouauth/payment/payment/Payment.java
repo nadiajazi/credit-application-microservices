@@ -30,4 +30,7 @@ public class Payment {
     private LocalDateTime lastModifiedDate;
     private Integer userId;
 
+    public Payment(int id, BigDecimal amount, PaymentMethod paymentMethod, LocalDateTime now, int user_id) {
+
+    }
 }

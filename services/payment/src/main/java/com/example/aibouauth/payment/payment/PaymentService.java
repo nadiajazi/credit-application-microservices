@@ -42,7 +42,6 @@ public class PaymentService {
 
 
 
-        // Send notification
         notificationProducer.sendNotification(
               new PaymentNotificationRequest(
                      request.amount(),
@@ -65,7 +64,7 @@ public class PaymentService {
 
 
 
-    public List<PaymentResponseAdmin> getAllPayments(String authHeader) {
+    /*public List<PaymentResponseAdmin> getAllPayments(String authHeader) {
         return repository.findAll().stream()
                 .map(payment -> {
                     PaymentResponseAdmin response = mapper.fromPaymentToAdmin(payment);
@@ -78,6 +77,15 @@ public class PaymentService {
                             customer
                     );
                     return response;
+                })
+                .collect(Collectors.toList());
+    }*/
+
+    public List<PaymentResponseAdmin> getAllPayments(String authHeader) {
+        return repository.findAll().stream()
+                .map(payment -> {
+                    CustomerResponse customer = userClient.getUserById(authHeader, payment.getUserId());
+                    return mapper.fromPaymentToAdmin(payment, customer);
                 })
                 .collect(Collectors.toList());
     }

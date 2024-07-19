@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PaymentMapperTest {
 
@@ -42,7 +42,7 @@ public class PaymentMapperTest {
         payment.setAmount(new BigDecimal("100.00"));
         payment.setPaymentMethod(PaymentMethod.CREDIT_CARD);
         payment.setCreatedDate(LocalDateTime.now());
-        payment.setUserId(12345);
+        payment.setUserId(123);
 
         PaymentResponse paymentResponse = paymentMapper.fromPayment(payment);
 
@@ -64,14 +64,15 @@ public class PaymentMapperTest {
         payment.setCreatedDate(LocalDateTime.now());
         payment.setUserId(12345);
 
+        CustomerResponse customer = new CustomerResponse(1, "John", "Doe", "john.doe@example.com", "28377510");
 
-        PaymentResponseAdmin paymentResponseAdmin = paymentMapper.fromPaymentToAdmin(payment);
+        PaymentResponseAdmin paymentResponseAdmin = paymentMapper.fromPaymentToAdmin(payment, customer);
 
 
         assertEquals(payment.getId(), paymentResponseAdmin.id());
         assertEquals(payment.getAmount(), paymentResponseAdmin.amount());
         assertEquals(payment.getPaymentMethod(), paymentResponseAdmin.paymentMethod());
         assertEquals(payment.getCreatedDate(), paymentResponseAdmin.createdDate());
-        assertNull(paymentResponseAdmin.customer());
+        assertNotNull(paymentResponseAdmin.customer());
     }
 }

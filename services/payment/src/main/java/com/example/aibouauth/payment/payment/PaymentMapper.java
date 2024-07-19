@@ -37,16 +37,17 @@ public class PaymentMapper {
         );
     }
 
-    public PaymentResponseAdmin fromPaymentToAdmin(Payment payment) {
+    public PaymentResponseAdmin fromPaymentToAdmin(Payment payment, CustomerResponse customer) {
         if (payment == null) {
             return null;
         }
+
         return new PaymentResponseAdmin(
                 payment.getId(),
                 payment.getAmount(),
                 payment.getPaymentMethod(),
                 payment.getCreatedDate(),
-                null
+                customer
         );
     }
 
