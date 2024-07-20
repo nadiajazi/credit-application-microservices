@@ -2,51 +2,51 @@ package com.example.aibouauth.payment.payment;
 
 import com.example.aibouauth.payment.notification.NotificationProducer;
 import com.example.aibouauth.payment.notification.PaymentNotificationRequest;
+import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 
+
+
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, topics = {"payment-topic"})
 public class PaymentProducerTest {
 
+
     @Autowired
     private NotificationProducer notificationProducer;
 
-    @BeforeAll
-    static void setup() {
+    private Consumer<String, String> consumer;
+    @BeforeEach
+    public void setup() {
+
         System.setProperty("spring.kafka.bootstrap-servers", "localhost:29092");
+
+
+        Properties consumerProps = createConsumerProperties();
+        consumer = new KafkaConsumer<>(consumerProps);
+        consumer.subscribe(Collections.singletonList("purchase-topic"));
     }
+
 
     @Test
     public void testSendPaymentConfirmation() {
         PaymentNotificationRequest expectedConfirmation = new PaymentNotificationRequest(
-                new BigDecimal("100.00"), PaymentMethod.CREDIT_CARD, "Nadia", "Jazi","jazinadia7@gmail.com"
+                new BigDecimal("100.00"), PaymentMethod.CREDIT_CARD, "Nadia", "Jazi", "jazinadia7@gmail.com"
         );
 
         notificationProducer.sendNotification(expectedConfirmation);
@@ -81,5 +81,12 @@ public class PaymentProducerTest {
         consumerProps.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         consumerProps.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         return consumerProps;
+    }
+
+    @AfterEach
+    public void tearDown() {
+        if (consumer != null) {
+            consumer.close();
+        }
     }
 }
