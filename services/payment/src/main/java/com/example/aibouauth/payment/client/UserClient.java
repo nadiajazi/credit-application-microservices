@@ -1,6 +1,6 @@
 package com.example.aibouauth.payment.client;
 
-import com.example.aibouauth.payment.payment.Customer;
+
 import com.example.aibouauth.payment.payment.CustomerResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;

@@ -12,8 +12,6 @@ server:
 spring:
   application:
     name: core
-    configuration:
-      payment-url: http://localhost:8090/api/v1/payment
   config:
     import: optional:configserver:http://localhost:8888
   datasource:

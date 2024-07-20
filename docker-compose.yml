@@ -86,7 +86,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=nadia
       - SPRING_DATASOURCE_PASSWORD=nadia
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092
-      - PAYMENT_URL=http://payment:8090/api/v1/payment
     depends_on:
       - config-server
       - discovery

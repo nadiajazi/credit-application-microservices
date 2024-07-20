@@ -17,8 +17,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -33,7 +31,6 @@ public class PurchaseService {
     private final PurchaseMapper mapper;
     private final PurchaseProducer purchaseProducer;
 
-    private static final Logger log = LoggerFactory.getLogger(PurchaseService.class);
 
     public List<PurchaseResponse> getUserPurchases(User user) {
         return purchaseRepository.findByUser(user).stream()
