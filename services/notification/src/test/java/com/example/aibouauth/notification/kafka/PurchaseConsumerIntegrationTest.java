@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, topics = {"purchase-topic"})
-public class NotificationConsumerIntegrationTest {
+public class PurchaseConsumerIntegrationTest {
 
     @Autowired
     private NotificationConsumer notificationConsumer;
@@ -58,25 +58,4 @@ public class NotificationConsumerIntegrationTest {
         );
     }
 
-    @Test
-    public void testConsumePaymentConfirmationNotifications() throws MessagingException {
-        PaymentMethod paymentMethod = PaymentMethod.valueOf("CREDIT_CARD");
-
-        PaymentConfirmation confirmation = new PaymentConfirmation(
-                new BigDecimal("50.00"), paymentMethod, "Nadia","Jazi", "jazinadia7@gmail.com"
-        );
-        doNothing().when(emailService).sendPaymentSuccessEmail(any(), any(), any());
-
-        notificationConsumer.consumePaymentSuccessNotifications(confirmation);
-
-        String fullName = confirmation.customerFirstname() + " " + confirmation.customerLastname();
-
-        await().atMost(10, TimeUnit.SECONDS).untilAsserted(() ->
-                verify(emailService, times(1)).sendPaymentSuccessEmail(
-                        eq("jazinadia7@gmail.com"),
-                        eq(fullName),
-                        eq(new BigDecimal("50.00"))
-                )
-        );
-    }
 }
