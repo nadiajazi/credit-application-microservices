@@ -47,7 +47,7 @@ public class PaymentServiceTest {
         PaymentRequest request = new PaymentRequest(
                 new BigDecimal("50.00"),
                 PaymentMethod.CREDIT_CARD,
-                new Customer(1, "John", "Doe", "john.doe@example.com")
+                new Customer(1, "test", "test", "test@example.com")
         );
         Integer userId = 1;
         BigDecimal userMontant = new BigDecimal("100.00");
@@ -79,7 +79,7 @@ public class PaymentServiceTest {
         PaymentRequest request = new PaymentRequest(
                 new BigDecimal("150.00"),
                 PaymentMethod.CREDIT_CARD,
-                new Customer(1, "John", "Doe", "john.doe@example.com")
+                new Customer(1, "test", "test", "test@example.com")
         );
         BigDecimal userMontant = new BigDecimal("100.00");
 
@@ -117,8 +117,8 @@ public class PaymentServiceTest {
 
         List<Payment> payments = List.of(payment1, payment2);
 
-        CustomerResponse customerResponse1 = new CustomerResponse(1, "John", "Doe", "john.doe@example.com", "1234567890");
-        CustomerResponse customerResponse2 = new CustomerResponse(2, "Jane", "Doe", "jane.doe@example.com", "0987654321");
+        CustomerResponse customerResponse1 = new CustomerResponse(1, "test", "test", "test@example.com", "1234567890");
+        CustomerResponse customerResponse2 = new CustomerResponse(2, "nadia", "jazi", "nadia@example.com", "0987654321");
 
         PaymentResponseAdmin responseAdmin1 = new PaymentResponseAdmin(
                 payment1.getId(),

@@ -182,9 +182,9 @@ class  UserControllerTest {
   void testGetUserById_UserFound() throws Exception {
     User user = new User();
     user.setId(1);
-    user.setFirstName("John");
-    user.setLastName("Doe");
-    user.setEmail("john.doe@example.com");
+    user.setFirstName("test");
+    user.setLastName("test");
+    user.setEmail("test@example.com");
     user.setPhone("1234567890");
 
     when(service.getUserById(1)).thenReturn(user);
@@ -193,9 +193,9 @@ class  UserControllerTest {
                     .header("Authorization", "Bearer token"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(1))
-            .andExpect(jsonPath("$.firstname").value("John"))
-            .andExpect(jsonPath("$.lastname").value("Doe"))
-            .andExpect(jsonPath("$.email").value("john.doe@example.com"))
+            .andExpect(jsonPath("$.firstname").value("test"))
+            .andExpect(jsonPath("$.lastname").value("test"))
+            .andExpect(jsonPath("$.email").value("test@example.com"))
             .andExpect(jsonPath("$.phone").value("1234567890"));
 
     verify(service, times(1)).getUserById(1);

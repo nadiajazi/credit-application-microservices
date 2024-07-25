@@ -41,7 +41,7 @@ public class PurchaseConsumerIntegrationTest {
     @Test
     public void testConsumePurchaseConfirmationNotifications() throws MessagingException {
         PurchaseConfirmation purchaseConfirmation = new PurchaseConfirmation(
-                new BigDecimal("100.00"), "John Doe", "johndoe@example.com", List.of(new Product("product1", 2))
+                new BigDecimal("100.00"), "test test", "test@example.com", List.of(new Product("product1", 2))
         );
 
         doNothing().when(emailService).sendPurchaseConfirmationEmail(any(), any(), any(), any());
@@ -51,8 +51,8 @@ public class PurchaseConsumerIntegrationTest {
         await().atMost(10, TimeUnit.SECONDS).untilAsserted(() ->
                 verify(emailService, times(1)).sendPurchaseConfirmationEmail(
                         eq(new BigDecimal("100.00")),
-                        eq("John Doe"),
-                        eq("johndoe@example.com"),
+                        eq("test test"),
+                        eq("test@example.com"),
                         anyList()
                 )
         );

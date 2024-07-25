@@ -30,7 +30,12 @@ public class Payment {
     private LocalDateTime lastModifiedDate;
     private Integer userId;
 
-    public Payment(int id, BigDecimal amount, PaymentMethod paymentMethod, LocalDateTime now, int user_id) {
+    public Payment(Integer id, BigDecimal amount, PaymentMethod paymentMethod, LocalDateTime now, Integer user_id) {
+        this.id = id;
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.createdDate = now;
+        this.userId= user_id;
 
     }
 }

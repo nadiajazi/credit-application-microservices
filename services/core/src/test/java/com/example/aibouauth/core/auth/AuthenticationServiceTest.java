@@ -50,18 +50,18 @@ class AuthenticationServiceTest {
     @Test
     void registerTest() {
         RegisterRequest request = RegisterRequest.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
+                .firstName("test")
+                .lastName("test")
+                .email("test@example.com")
                 .password("password")
                 .phone("123456789")
                 .role(Role.USER)
                 .build();
 
         User user = User.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
+                .firstName("test")
+                .lastName("test")
+                .email("test@example.com")
                 .phone("123456789")
                 .maxAmount(0.00)
                 .montant(BigDecimal.ZERO)
@@ -83,7 +83,7 @@ class AuthenticationServiceTest {
 
         assertEquals("jwtToken", response.getAccessToken());
         assertEquals("refreshToken", response.getRefreshToken());
-        assertEquals("John", response.getFirstName());
+        assertEquals("test", response.getFirstName());
         assertEquals(Role.USER, response.getRole());
         assertEquals(1, response.getId());
     }
@@ -92,13 +92,13 @@ class AuthenticationServiceTest {
     @Test
     void authenticateTest() {
         AuthenticationRequest request = AuthenticationRequest.builder()
-                .email("john.doe@example.com")
+                .email("test@example.com")
                 .password("password")
                 .build();
 
         User user = User.builder()
-                .firstName("John")
-                .email("john.doe@example.com")
+                .firstName("test")
+                .email("test@example.com")
                 .password("encodedPassword")
                 .role(Role.USER)
                 .montant(BigDecimal.ZERO)
@@ -113,7 +113,7 @@ class AuthenticationServiceTest {
 
         assertEquals("jwtToken", response.getAccessToken());
         assertEquals("refreshToken", response.getRefreshToken());
-        assertEquals("John", response.getFirstName());
+        assertEquals("test", response.getFirstName());
         assertEquals(Role.USER, response.getRole());
         assertEquals(1, response.getId());
 

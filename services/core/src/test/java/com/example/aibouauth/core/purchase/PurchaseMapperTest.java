@@ -32,7 +32,7 @@ class PurchaseMapperTest {
 
     @Test
     void shouldMapPurchaseRequestToPurchase() {
-        User user = new User(1, "JohnDoe", "john.doe@example.com", "123456789");
+        User user = new User(1, "test", "test@example.com", "123456789");
         when(userRepository.findUserById(1)).thenReturn(Optional.of(user));
         when(productRepository.findByName("Laptop")).thenReturn(new Product(1, "Laptop", new BigDecimal("1000"), "https://example.com/laptop.jpg", "L123", 10));
 
@@ -67,7 +67,7 @@ class PurchaseMapperTest {
     void shouldThrowBusinessExceptionWhenProductNotFound() {
 
 
-            User mockUser = new User(1, "John Doe", "john.doe@example.com", "123456789");
+            User mockUser = new User(1, "test", "test@example.com", "123456789");
             when(userRepository.findUserById(1)).thenReturn(Optional.of(mockUser));
             when(productRepository.findByName(anyString())).thenReturn(null);
 
@@ -80,7 +80,7 @@ class PurchaseMapperTest {
 
     @Test
     void shouldMapPurchaseToPurchaseResponse() {
-        User user = new User(1, "JohnDoe", "john.doe@example.com", "123456789");
+        User user = new User(1, "test", "test@example.com", "123456789");
         Product product = new Product(1, "Laptop", new BigDecimal("1000"), "https://example.com/laptop.jpg", "L123", 10);
 
         Purchase purchase = Purchase.builder()

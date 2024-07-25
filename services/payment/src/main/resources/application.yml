@@ -1,9 +1,9 @@
 eureka:
   instance:
-    hostname: payment
+    hostname: localhost
   client:
     service-url:
-      defaultZone : http://localhost:8761/eurekaa
+      defaultZone : http://localhost:8761/eureka
 server:
   port: 8090
   error:
@@ -13,7 +13,7 @@ spring:
   application:
     name: payment
     configuration:
-      user-url: http://localhost:8060/api/v1
+      user-url: http://lccalhost:8060/api/v1
   config:
     import: optional:configserver:http://localhost:8888
   datasource:

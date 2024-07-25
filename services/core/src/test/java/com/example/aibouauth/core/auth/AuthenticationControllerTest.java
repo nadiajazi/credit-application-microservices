@@ -47,9 +47,9 @@ class AuthenticationControllerTest {
     @Test
     void registerTest() throws Exception {
         RegisterRequest request = RegisterRequest.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
+                .firstName("test")
+                .lastName("test")
+                .email("test@example.com")
                 .password("password")
                 .phone("123456789")
                 .role(Role.USER)
@@ -58,7 +58,7 @@ class AuthenticationControllerTest {
         AuthenticationResponse response = AuthenticationResponse.builder()
                 .accessToken("jwtToken")
                 .refreshToken("refreshToken")
-                .firstName("John")
+                .firstName("test")
                 .role(Role.USER)
                 .id(1)
                 .montant(BigDecimal.ZERO)
@@ -72,7 +72,7 @@ class AuthenticationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").value("jwtToken"))
                 .andExpect(jsonPath("$.refreshToken").value("refreshToken"))
-                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.firstName").value("test"))
                 .andExpect(jsonPath("$.role").value("USER"))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.montant").value(0));
@@ -81,14 +81,14 @@ class AuthenticationControllerTest {
     @Test
     void authenticateTest() throws Exception {
         AuthenticationRequest request = AuthenticationRequest.builder()
-                .email("john.doe@example.com")
+                .email("test@example.com")
                 .password("password")
                 .build();
 
         AuthenticationResponse response = AuthenticationResponse.builder()
                 .accessToken("jwtToken")
                 .refreshToken("refreshToken")
-                .firstName("John")
+                .firstName("test")
                 .role(Role.USER)
                 .id(1)
                 .montant(BigDecimal.ZERO)
@@ -102,7 +102,7 @@ class AuthenticationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").value("jwtToken"))
                 .andExpect(jsonPath("$.refreshToken").value("refreshToken"))
-                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.firstName").value("test"))
                 .andExpect(jsonPath("$.role").value("USER"))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.montant").value(0));

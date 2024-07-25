@@ -55,8 +55,5 @@ public class Purchase {
         products.add(product);
     }
 
-    public Integer getUserId() {
-        return user != null ? user.getId() : null;
-    }
 
 }

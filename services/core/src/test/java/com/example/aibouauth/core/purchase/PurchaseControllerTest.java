@@ -54,8 +54,8 @@ public class PurchaseControllerTest {
         List<PurchaseResponse> purchases = new ArrayList<>();
         List<ProductPurchaseResponse> products1 = new ArrayList<>();
         List<ProductPurchaseResponse> products2 = new ArrayList<>();
-        UserResponse userResponse1 = new UserResponse("John","28377510");
-        UserResponse userResponse2 = new UserResponse("Joe","28377510");
+        UserResponse userResponse1 = new UserResponse("test","28377510");
+        UserResponse userResponse2 = new UserResponse("nadia","28377510");
         ProductPurchaseResponse product1 = new ProductPurchaseResponse(1,"product1",BigDecimal.valueOf(10.0));
         ProductPurchaseResponse product2 = new ProductPurchaseResponse(2,"product2",BigDecimal.valueOf(20.0));
         products1.add(product1);
@@ -77,7 +77,7 @@ public class PurchaseControllerTest {
     @Test
     void testGetClientPurchases() throws Exception {
         Integer clientId = 1;
-        User client = new User(clientId, "John Doe", "john@example.com","28377510");
+        User client = new User(clientId, "test", "test@example.com","28377510");
 
         List<PurchaseResponse> purchases = new ArrayList<>();
         purchases.add(new PurchaseResponse(1, BigDecimal.valueOf(100.0), null, null, null));
