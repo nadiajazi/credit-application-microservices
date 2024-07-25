@@ -1,5 +1,6 @@
 package com.example.aibouauth.payment.payment;
 
+import com.example.aibouauth.core.user.Role;
 import com.example.aibouauth.core.user.User;
 import com.example.aibouauth.payment.client.UserClient;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,8 @@ import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRun
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -53,4 +56,22 @@ public class PaymentContractTest {
         assertEquals(mockUser.getId(), id);
     }
 
-}
+    @Test
+    public void shouldGetUserMontant() {
+        User mockUser = new User(1, "Nadia", "Jazi", "john.doe@example.com", "1234567890", 1000.00, new BigDecimal("500.00"), Role.USER);
+        when(userClient.getUserMontant(anyString())).thenReturn(mockUser.getMontant());
+
+        BigDecimal montant = userClient.getUserMontant("Bearer some-token");
+        assertEquals(mockUser.getMontant(), montant);
+    }
+
+    @Test
+    public void shouldUpdateUserMontant() {
+        User mockUser = new User(1, "Nadia", "Jazi", "john.doe@example.com", "1234567890", 1000.00, new BigDecimal("500.00"), Role.USER);
+        when(userClient.getUserMontant(anyString())).thenReturn(mockUser.getMontant());
+
+        BigDecimal montant = userClient.getUserMontant("Bearer some-token");
+        assertEquals(mockUser.getMontant(), montant);
+    }
+
+    }
