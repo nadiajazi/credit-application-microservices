@@ -1,7 +1,7 @@
 package com.example.aibouauth.payment.payment;
 
+import com.example.aibouauth.core.user.User;
 import com.example.aibouauth.payment.client.UserClient;
-import com.example.aibouauth.payment.payment.CustomerResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,16 +35,22 @@ public class PaymentContractTest {
 
     @Test
     public void shouldGetUserById() {
-        // Define the mock behavior
         CustomerResponse mockResponse = new CustomerResponse(1,"John", "Doe", "john.doe@example.com", "1234567890");
-        // Configure the mock to return the expected response
         when(userClient.getUserById(anyString(), anyInt())).thenReturn(mockResponse);
 
-        // Call the method and assert the results
         CustomerResponse response = userClient.getUserById("Bearer some-token", 1);
         assertEquals("John", response.firstname());
         assertEquals("Doe", response.lastname());
         assertEquals("john.doe@example.com", response.email());
         assertEquals("1234567890", response.phone());
     }
+    @Test
+    public void shouldFindUserIdByToken() {
+        User mockUser = new User(1, "Nadia", "john.doe@example.com", "1234567890");
+        when(userClient.findUserIdByToken(anyString())).thenReturn(mockUser.getId());
+
+        Integer id = userClient.findUserIdByToken("Bearer some-token");
+        assertEquals(mockUser.getId(), id);
+    }
+
 }
