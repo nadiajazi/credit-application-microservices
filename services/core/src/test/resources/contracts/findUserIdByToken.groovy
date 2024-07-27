@@ -6,7 +6,7 @@ Contract.make {
     description "should return user id by token"
     request {
         method GET()
-        urlPath("/user/byToken") {
+        urlPath("/api/v1/user/byToken") {
             headers {
                 header('Authorization', $(regex('Bearer [a-zA-Z0-9-.]+')))
             }

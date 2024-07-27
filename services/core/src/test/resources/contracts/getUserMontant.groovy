@@ -3,10 +3,10 @@ package contracts
 import org.springframework.cloud.contract.spec.Contract
 
 Contract.make {
-    description "should return user montant"
+    description "should return user montant by token"
     request {
         method GET()
-        urlPath("/user/montant/1") {
+        urlPath("/api/v1/user/montant") {
             headers {
                 header('Authorization', $(regex('Bearer [a-zA-Z0-9-.]+')))
             }
@@ -14,7 +14,9 @@ Contract.make {
     }
     response {
         status OK()
-        body(100.00)
+        body(
+                100.00
+        )
         headers {
             contentType(applicationJson())
         }

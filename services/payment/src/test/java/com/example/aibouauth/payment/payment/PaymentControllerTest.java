@@ -30,8 +30,6 @@ class PaymentControllerTest {
     @Mock
     private PaymentService paymentService;
 
-    @Mock
-    private PaymentMapper paymentMapper;
 
     @Mock
     private UserClient userClient;

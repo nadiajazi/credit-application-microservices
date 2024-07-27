@@ -6,7 +6,7 @@ Contract.make {
     description "should return user data by id"
     request {
         method GET()
-        urlPath('/user/1')
+        urlPath('/api/v1/user/1')
         headers {
             header 'Authorization': $(consumer(regex('Bearer [a-zA-Z0-9-._~+/]+=*')))
         }
@@ -15,10 +15,11 @@ Contract.make {
         status 200
         body([
                 id: 1,
-                firstName: 'John',
-                lastName: 'Doe',
-                email: 'john.doe@example.com',
-                montant: 100.00
+                firstname: 'Nadia',
+                lastname: 'Jazi',
+                email: 'jazinadia@gmail.com',
+                montant: 100.00,
+                phone: "1234567890"
         ])
         headers {
             contentType(applicationJson())

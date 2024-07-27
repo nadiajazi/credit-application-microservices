@@ -13,7 +13,7 @@ spring:
   application:
     name: payment
     configuration:
-      user-url: http://lccalhost:8060/api/v1
+      user-url: http://localhost:8060/api/v1
   config:
     import: optional:configserver:http://localhost:8888
   datasource:

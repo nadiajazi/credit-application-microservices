@@ -29,7 +29,7 @@ public class CdcBaseClass {
         RestAssuredMockMvc.standaloneSetup(userController);
 
 
-        User mockUser = new User(1, "John", "Doe", "john.doe@example.com", "password", "1234567890", 1000.0, BigDecimal.valueOf(100.00), Role.USER);
+        User mockUser = new User(1, "Nadia", "Jazi", "jazinadia@gmail.com", "password", "1234567890", 1000.0, BigDecimal.valueOf(100.00), Role.USER);
         Mockito.when(usersService.getUserById(Mockito.eq(1)))
                 .thenReturn(mockUser);
 
