@@ -1,9 +1,9 @@
 eureka:
   instance:
-    hostname: localhost
+    hostname: payment
   client:
     service-url:
-      defaultZone : http://localhost:8761/eureka
+      defaultZone : http://discovery:8761/eureka
 server:
   port: 8090
   error:
@@ -13,12 +13,12 @@ spring:
   application:
     name: payment
     configuration:
-      user-url: http://localhost:8060/api/v1
+      user-url: http://core:8060/api/v1
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://config-server:8888
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/payment
+    url: jdbc:postgresql://ms_pg_sql:5432/payment
     username: nadia
     password: nadia
   jpa:
@@ -28,7 +28,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   kafka:
     producer:
-      bootstrap-servers: localhost:29092
+      bootstrap-servers: kafka:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:

@@ -95,6 +95,18 @@
 			<version>1.19.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-contract-stub-runner</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.example.aibouauth</groupId>
+			<artifactId>payment</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<classifier>stubs</classifier>
+			<scope>test</scope>
+		</dependency>
 
 
 	</dependencies>

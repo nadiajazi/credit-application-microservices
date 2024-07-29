@@ -22,14 +22,7 @@
       <jdbc-url>jdbc:mysql://localhost:3308/notification</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="main@localhost" uuid="cea458ad-4bae-4be7-b72c-f308476fe36b">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3308/main</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="core@localhost" uuid="8abe396c-6a93-44c6-a528-fa006e508365">
+    <data-source source="LOCAL" name="core@localhost" uuid="3c9b5d5f-83ff-4708-818d-dbddfb4f2952">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
