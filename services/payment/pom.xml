@@ -123,6 +123,11 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-contract-verifier</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
     <dependencyManagement>
@@ -146,6 +151,16 @@
                 <artifactId>spring-cloud-starter-contract-verifier</artifactId>
                 <version>4.0.0</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-messaging</artifactId>
+            </dependency>
+
+            <!-- Apache HttpCore for MessageHeaders -->
+            <dependency>
+                <groupId>org.apache.httpcomponents.core5</groupId>
+                <artifactId>httpcore5</artifactId>
             </dependency>
 
 
