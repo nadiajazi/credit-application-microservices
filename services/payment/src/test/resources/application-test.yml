@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    contract:
+      stubrunner:
+        ids: com.example.aibouauth:core:+:stubs:0.0.1-SNAPSHOT
+        repositoryRoot: file:///C:/Users/asus/Desktop/META-INF/com.example.aibouauth/core/0.0.1-SNAPSHOT/contracts
+        work-offline: true
+    config:
+      enabled: false
+
+  application:
+    configuration:
+     url: http://localhost:8010/api/v1

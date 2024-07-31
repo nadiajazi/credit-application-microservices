@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+
+  profiles:
+    active: test
+logging:
+  level:
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG
+    org.springframework.cloud.contract.stubrunner: DEBUG

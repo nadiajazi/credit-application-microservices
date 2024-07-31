@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
@@ -24,15 +25,17 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureStubRunner(
-        ids = "com.example.aibouauth:core:+:stubs:0.0.1-SNAPSHOT-stubs:8060",
+        ids = "com.example.aibouauth:core:+:stubs:0.0.1-SNAPSHOT-stubs:8010",
         stubsMode = StubRunnerProperties.StubsMode.LOCAL
 )
 @TestPropertySource(properties = {
         "spring.datasource.url=jdbc:h2:mem:testdb",
         "spring.datasource.driver-class-name=org.h2.Driver",
         "spring.datasource.username=sa",
-        "spring.datasource.password="
+        "spring.datasource.password=",
+
 })
+@ActiveProfiles("test")
 public class PaymentContractTest {
 
     @MockBean
@@ -40,7 +43,7 @@ public class PaymentContractTest {
 
 
 
-    @Value("${spring.application.configuration.user-url}")
+    @Value("${spring.application.configuration.url}")
     private String userServiceUrl;
 
     @Test

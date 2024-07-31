@@ -76,11 +76,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-contract-stub-runner</artifactId>
             <scope>test</scope>
@@ -105,12 +100,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-contract-verifier</artifactId>
-            <version>4.1.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -124,10 +113,17 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-contract-verifier</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <version>3.2.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
     <dependencyManagement>
@@ -186,26 +182,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-contract-maven-plugin</artifactId>
-                <version>${spring-cloud-contract.version}</version>
 
-                <extensions>true</extensions>
-                <configuration>
-                    <testFramework>JUNIT5</testFramework>
-                    <baseClassForTests>com.example.aibouauth.payment.payment.BaseClassForTests</baseClassForTests>
-
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>convert</goal>
-                            <goal>generateStubs</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
