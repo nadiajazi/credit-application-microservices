@@ -3,15 +3,35 @@ spring:
     config:
       enabled: false
 
+
+
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     username: sa
-    password:
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
 
 
-  profiles:
-    active: test
+
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:29092
+      group-id: test-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: paymentConfirmation:com.example.aibouauth.notification.kafka.payment.PaymentConfirmation
+
+
 logging:
   level:
     org.springframework.kafka: DEBUG

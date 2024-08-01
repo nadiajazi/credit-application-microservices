@@ -12,13 +12,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @SpringBootTest
-@TestPropertySource(properties = "spring.kafka.bootstrap-servers=kafka:9092")
+@TestPropertySource(properties = "spring.kafka.bootstrap-servers=localhost:29092")
+@ActiveProfiles("test")
 public class NotificationConsumerTest {
 
     @Mock

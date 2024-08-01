@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, topics = {"payment-topic"})
+@ActiveProfiles("test")
 public class PaymentConsumerIntegrationTest {
 
     @Autowired
@@ -35,7 +37,7 @@ public class PaymentConsumerIntegrationTest {
 
     @BeforeAll
     static void setup() {
-        System.setProperty("spring.kafka.bootstrap-servers", "localhost:9092");
+        System.setProperty("spring.kafka.bootstrap-servers", "localhost:29092");
     }
 
     @Test
