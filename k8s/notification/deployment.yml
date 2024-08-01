@@ -19,7 +19,7 @@ spec:
             - containerPort: 8040
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "docker"
+              value: docker
             - name: CONFIG_SERVER_URL
               valueFrom:
                 configMapKeyRef:
@@ -31,22 +31,45 @@ spec:
                   name: shared-config
                   key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:mysql://ms_my_sql:3306/notification"
+              value: jdbc:mysql://ms_my_sql:3306/notification
             - name: SPRING_DATASOURCE_USERNAME
-              value: "nadia"
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: SPRING_DATASOURCE_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "nadia"
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: SPRING_DATASOURCE_PASSWORD
             - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
               valueFrom:
                 configMapKeyRef:
                   name: shared-config
                   key: SPRING_KAFKA_BOOTSTRAP_SERVERS
             - name: SPRING_MAIL_HOST
-              value: "ms_mail_dev"
+              value: ms_mail_dev
             - name: SPRING_MAIL_PORT
               value: "1025"
             - name: SPRING_MAIL_USERNAME
-              value: "nadia"
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: SPRING_MAIL_USERNAME
             - name: SPRING_MAIL_PASSWORD
-              value: "nadia"
-
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: SPRING_MAIL_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification
+spec:
+  selector:
+    app: notification
+  ports:
+    - protocol: TCP
+      port: 8040
+      targetPort: 8040

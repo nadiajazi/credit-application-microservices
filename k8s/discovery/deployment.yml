@@ -19,9 +19,21 @@ spec:
             - containerPort: 8761
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "docker"
+              value: docker
             - name: CONFIG_SERVER_URL
               valueFrom:
                 configMapKeyRef:
                   name: shared-config
                   key: CONFIG_SERVER_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery
+spec:
+  selector:
+    app: discovery
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761

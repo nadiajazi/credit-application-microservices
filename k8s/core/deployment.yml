@@ -19,7 +19,7 @@ spec:
             - containerPort: 8060
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "docker"
+              value: docker
             - name: CONFIG_SERVER_URL
               valueFrom:
                 configMapKeyRef:
@@ -31,13 +31,31 @@ spec:
                   name: shared-config
                   key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:mysql://ms_my_sql:3306/core"
+              value: jdbc:mysql://ms_my_sql:3306/core
             - name: SPRING_DATASOURCE_USERNAME
-              value: "nadia"
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: SPRING_DATASOURCE_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "nadia"
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: SPRING_DATASOURCE_PASSWORD
             - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
               valueFrom:
                 configMapKeyRef:
                   name: shared-config
                   key: SPRING_KAFKA_BOOTSTRAP_SERVERS
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: core
+spec:
+  selector:
+    app: core
+  ports:
+    - protocol: TCP
+      port: 8060
+      targetPort: 8060

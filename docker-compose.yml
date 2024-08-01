@@ -35,7 +35,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://ms_my_sql:3306/notification
       - SPRING_DATASOURCE_USERNAME=nadia
       - SPRING_DATASOURCE_PASSWORD=nadia
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka.yml:9092
       - SPRING_MAIL_HOST=ms_mail_dev
       - SPRING_MAIL_PORT=1025
       - SPRING_MAIL_USERNAME=nadia
@@ -63,7 +63,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ms_pg_sql:5432/payment
       - SPRING_DATASOURCE_USERNAME=nadia
       - SPRING_DATASOURCE_PASSWORD=nadia
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka.yml:9092
       - SPRING_APPLICATION_CONFIGURATION_USER_URL=http://core:8060/api/v1
     depends_on:
       - config-server
@@ -86,7 +86,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://ms_my_sql:3306/core
       - SPRING_DATASOURCE_USERNAME=nadia
       - SPRING_DATASOURCE_PASSWORD=nadia
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=PLAINTEXT://kafka.yml:9092
     depends_on:
       - config-server
       - discovery
@@ -155,7 +155,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
-    container_name: zookeeper
+    container_name: zookeeper.yml
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -166,7 +166,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:latest
-    container_name: kafka
+    container_name: kafka.yml
     depends_on:
       - zookeeper
     ports:
@@ -174,8 +174,8 @@ services:
       - 29092:29092
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper.yml:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka.yml:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -192,7 +192,7 @@ services:
     ports:
       - "8033:9000"
     environment:
-      KAFKA_BROKER_CONNECT: PLAINTEXT://kafka:9092
+      KAFKA_BROKER_CONNECT: PLAINTEXT://kafka.yml:9092
       JVM_OPTS: "-Xms32M -Xmx64M"
     networks:
       - microservices-net
