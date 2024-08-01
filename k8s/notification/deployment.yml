@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+        - name: notification
+          image: jazinadia11/notification:latest
+          ports:
+            - containerPort: 8040
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "docker"
+            - name: CONFIG_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: CONFIG_SERVER_URL
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://ms_my_sql:3306/notification"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "nadia"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "nadia"
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: shared-config
+                  key: SPRING_KAFKA_BOOTSTRAP_SERVERS
+            - name: SPRING_MAIL_HOST
+              value: "ms_mail_dev"
+            - name: SPRING_MAIL_PORT
+              value: "1025"
+            - name: SPRING_MAIL_USERNAME
+              value: "nadia"
+            - name: SPRING_MAIL_PASSWORD
+              value: "nadia"
+
