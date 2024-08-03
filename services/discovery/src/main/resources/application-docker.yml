@@ -1,6 +1,6 @@
 eureka:
   instance:
-    hostname: localhost
+    hostname: discovery
   client:
     register-with-eureka: false
     fetch-registry: false
@@ -11,6 +11,4 @@ server:
   port: 8761
 spring:
   config:
-    import: optional:configserver:http://localhost:8888
-  profiles:
-    active: local
+    import: optional:configserver:http://config-server:8888

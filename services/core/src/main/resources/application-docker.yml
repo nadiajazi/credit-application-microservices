@@ -1,9 +1,9 @@
 eureka:
   instance:
-    hostname: localhost
+    hostname: core
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://discovery:8761/eureka
 server:
   port: 8060
   error:
@@ -13,9 +13,9 @@ spring:
   application:
     name: core
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://config-server:8888
   datasource:
-    url: jdbc:mysql://localhost:3308/core
+    url: jdbc:mysql://ms_my_sql:3306/core
     username: nadia
     password: nadia
     driver-class-name: com.mysql.cj.jdbc.Driver
