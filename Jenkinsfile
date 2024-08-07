@@ -12,19 +12,15 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/nadiajazi/credit-application-microservices.git'
             }
         }
-
-        stage('Run Ansible Playbook') {
+            stage('Run Ansible Playbook') {
             steps {
-                sshagent(credentials: [env.ANSIBLE_SSH_CREDENTIALS_ID]) {
-                  sh '''
-                  ssh -o StrictHostKeyChecking=no ansibleadmin@20.86.49.158 <<EOF
-                  cd /opt/docker
-                  ansible-playbook ansible.yml
-                  EOF
-                 '''
-                }
+                sh '''
+                sshpass -p 'Eniso@11' ssh -o StrictHostKeyChecking=no ansibleadmin@20.86.49.158 <<EOF
+                cd /opt/docker
+                ansible-playbook ansible.yml
+                EOF
+                '''
             }
-        }
     }
 
     post {
