@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         ANSIBLE_SSH_CREDENTIALS_ID = 'ansibleadmin_ssh'
-        SSHPASS_PATH = '/usr/bin/sshpass'  // Adjust if needed
+        SSHPASS_PATH = '/usr/bin/sshpass'
     }
 
     stages {
@@ -15,12 +15,13 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                sh '''
-                $SSHPASS_PATH -p 'Eniso@11' ssh -o StrictHostKeyChecking=no ansibleadmin@20.86.49.158 <<EOF
+                sh "echo 'Running Ansible Playbook...'"
+                sh """
+                ${SSHPASS_PATH} -p 'Eniso@11' ssh -o StrictHostKeyChecking=no ansibleadmin@20.86.49.158 <<EOF
                 cd /opt/docker
                 ansible-playbook ansible.yml
                 EOF
-                '''
+                """
             }
         }
     }
