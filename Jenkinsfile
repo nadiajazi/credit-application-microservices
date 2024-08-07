@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-
         ANSIBLE_SSH_CREDENTIALS_ID = 'ansibleadmin_ssh'
     }
 
@@ -12,7 +11,8 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/nadiajazi/credit-application-microservices.git'
             }
         }
-            stage('Run Ansible Playbook') {
+
+        stage('Run Ansible Playbook') {
             steps {
                 sh '''
                 sshpass -p 'Eniso@11' ssh -o StrictHostKeyChecking=no ansibleadmin@20.86.49.158 <<EOF
@@ -21,6 +21,7 @@ pipeline {
                 EOF
                 '''
             }
+        }
     }
 
     post {
