@@ -15,13 +15,9 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                sh "echo 'Running Ansible Playbook...'"
-                sh """
-                ${SSHPASS_PATH} -p 'Eniso@11' ssh -o StrictHostKeyChecking=no ansibleadmin@20.86.49.158 <<EOF
-                cd /opt/docker
-                ansible-playbook ansible.yml
-                EOF
-                """
+               sh """
+               ${SSHPASS_PATH} -p 'Eniso@11' ssh -o StrictHostKeyChecking=no ansibleadmin@20.86.49.158 'echo "cd /opt/docker && ansible-playbook ansible.yml" > /tmp/run_playbook.sh && chmod +x /tmp/run_playbook.sh && /tmp/run_playbook.sh'
+               """
             }
         }
     }
