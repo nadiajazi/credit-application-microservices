@@ -3,6 +3,7 @@ package com.example.aibouauth.core.user;
 
 import com.example.aibouauth.core.purchase.Purchase;
 import com.example.aibouauth.core.token.Token;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,8 +34,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private  Role  role;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.00")
     private BigDecimal montant = BigDecimal.ZERO;
-
     @OneToMany(mappedBy = "user")
     private  List<Token>tokens;
 
@@ -71,6 +72,14 @@ public class User implements UserDetails {
         this.maxAmount = maxAmount;
         this.montant= montant;
         this.role= role;
+    }
+
+    public User(int id, String firstName, String lastName, String email, String phone) {
+        this.id = id;
+        this.firstName=firstName;
+        this.lastName= lastName;
+        this.email= email;
+        this.phone= phone;
     }
 
 

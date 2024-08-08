@@ -1,44 +1,44 @@
 package com.example.aibouauth.core.contractTest;
 
-
 import com.example.aibouauth.core.CoreApplication;
-import com.example.aibouauth.core.user.Role;
-import com.example.aibouauth.core.user.User;
-import com.example.aibouauth.core.user.UserController;
-import com.example.aibouauth.core.user.UsersService;
+import com.example.aibouauth.core.user.*;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
 
-@SpringBootTest(classes = CoreApplication.class)
+
+@SpringBootTest
+@ContextConfiguration(classes = {UserController.class, UsersService.class, UserRepository.class})
+@ActiveProfiles("test")
 public class CdcBaseClass {
 
     @Autowired
-    UserController userController;
+    private UserController userController;
 
     @MockBean
-    UsersService usersService;
+    private UsersService usersService;
 
     @BeforeEach
     public void setup() {
         RestAssuredMockMvc.standaloneSetup(userController);
 
 
-        User mockUser = new User(1, "Nadia", "Jazi", "jazinadia@gmail.com", "password", "1234567890", 1000.0, BigDecimal.valueOf(100.00), Role.USER);
         Mockito.when(usersService.getUserById(Mockito.eq(1)))
-                .thenReturn(mockUser);
+                .thenReturn(new User(1, "Nadia","Jazi","jazinadia@gmail.com",  "1234567890"));
 
         Mockito.when(usersService.getUserIdByToken(Mockito.anyString()))
                 .thenReturn(1);
 
         Mockito.when(usersService.getUserMontant(Mockito.anyString()))
-                .thenReturn(BigDecimal.valueOf(100.00));
+                .thenReturn(BigDecimal.valueOf(100.0));
 
         Mockito.doNothing().when(usersService).updateUserMontant(Mockito.eq(1), Mockito.any(BigDecimal.class));
     }

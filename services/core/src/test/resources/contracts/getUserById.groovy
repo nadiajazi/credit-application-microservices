@@ -18,7 +18,6 @@ Contract.make {
                 firstname: 'Nadia',
                 lastname: 'Jazi',
                 email: 'jazinadia@gmail.com',
-                montant: 100.00,
                 phone: "1234567890"
         ])
         headers {

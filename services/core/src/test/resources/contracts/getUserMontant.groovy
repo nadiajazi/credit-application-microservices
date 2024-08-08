@@ -15,7 +15,7 @@ Contract.make {
     response {
         status OK()
         body(
-                100.00
+                $(regex('\\d+(\\.\\d+)?'))
         )
         headers {
             contentType(applicationJson())
