@@ -17,7 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.math.BigDecimal;
 
 @SpringBootTest(classes = CoreApplication.class)
-@ActiveProfiles("test")
 public class CdcBaseClass {
 
     @Autowired
