@@ -9,7 +9,7 @@ import java.util.List;
 public record PurchaseConfirmation(
         BigDecimal totalAmount,
         String customerName,
-        String emaill,
+        String email,
         List<ProductPurchaseRequest> products
 ) {
 
