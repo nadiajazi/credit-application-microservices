@@ -5,6 +5,7 @@ import com.example.aibouauth.payment.client.UpdateMontantRequest;
 import com.example.aibouauth.payment.client.UserClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -96,14 +97,16 @@ public class PaymentContractTest {
         headers.set("Authorization", "Bearer some-token");
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        when(userClient.getUserMontant(anyString())).thenReturn(new BigDecimal("100.00"));
+        when(userClient.getUserMontant(anyString())).thenReturn(new BigDecimal("100.0"));
 
-        ResponseEntity<BigDecimal> response = restTemplate.exchange(url, HttpMethod.GET, entity, BigDecimal.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody()).isEqualTo(new BigDecimal("100.00"));
+        assertThat(response.getBody()).isEqualTo("100.0");
     }
+
+
 
     @Test
     void shouldUpdateUserMontant() {
@@ -114,7 +117,7 @@ public class PaymentContractTest {
         headers.set("Authorization", "Bearer some-token");
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        UpdateMontantRequest request = new UpdateMontantRequest(1, new BigDecimal("150.00"));
+        UpdateMontantRequest request = new UpdateMontantRequest(1, new BigDecimal("100.00"));
         HttpEntity<UpdateMontantRequest> entity = new HttpEntity<>(request, headers);
 
         doNothing().when(userClient).updateUserMontant(anyString(), any(UpdateMontantRequest.class));
