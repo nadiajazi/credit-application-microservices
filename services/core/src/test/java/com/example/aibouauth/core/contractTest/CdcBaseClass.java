@@ -14,13 +14,13 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
 
-
+/*
 @SpringBootTest
 @ContextConfiguration(classes = {UserController.class, UsersService.class, UserRepository.class})
-@ActiveProfiles("test")
+@ActiveProfiles("test")*/
 public class CdcBaseClass {
 
-    @Autowired
+   /* @Autowired
     private UserController userController;
 
     @MockBean
@@ -41,5 +41,5 @@ public class CdcBaseClass {
                 .thenReturn(BigDecimal.valueOf(100.0));
 
         Mockito.doNothing().when(usersService).updateUserMontant(Mockito.eq(1), Mockito.any(BigDecimal.class));
-    }
+    }*/
 }

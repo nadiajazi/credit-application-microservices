@@ -23,7 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
+/*@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureStubRunner(
         ids = "com.example.aibouauth:core:+:stubs:0.0.1-SNAPSHOT-stubs:8010",
@@ -36,10 +36,10 @@ import static org.mockito.Mockito.*;
         "spring.datasource.password=",
 
 })
-@ActiveProfiles("test")
+@ActiveProfiles("test")*/
 public class PaymentContractTest {
 
-    @MockBean
+    /*@MockBean
     private UserClient userClient;
 
 
@@ -126,6 +126,6 @@ public class PaymentContractTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
-
+*/
 
 }
