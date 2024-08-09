@@ -1,6 +1,6 @@
 package com.example.aibouauth.core.contractTest;
 
-import com.example.aibouauth.core.CoreApplication;
+/*import com.example.aibouauth.core.CoreApplication;
 import com.example.aibouauth.core.user.*;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
-
+*/
 /*
 @SpringBootTest
 @ContextConfiguration(classes = {UserController.class, UsersService.class, UserRepository.class})
