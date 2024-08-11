@@ -1,0 +1,41 @@
+server:
+  port: 8060
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  cloud:
+    config:
+        enabled: false
+  application:
+    name: core
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    database: mysql
+  kafka:
+    producer:
+      bootstrap-servers: kafka:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: purchaseConfirmation:com.example.aibouauth.core.kafka.PurchaseConfirmation
+application:
+  security:
+    jwt:
+      secret-key: 3e58950f9b875dddf66b25bd1b846e78c8c2bb923ee8cbd7f72695aefb626be3
+      expiration: 8640000000000000000
+      refresh-token:
+        expiration: 60480000000000000
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    enabled: false

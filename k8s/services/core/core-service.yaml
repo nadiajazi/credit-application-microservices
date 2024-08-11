@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: core
+  template:
+    metadata:
+      labels:
+        app: core
+    spec:
+      containers:
+        - name: core
+          image: jazinadia11/core:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8060
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
+            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_KAFKA_BOOTSTRAP-SERVERS
+                  name: core-service-config
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                  configMapKeyRef:
+                    key: SPRING_DATASOURCE_URL
+                    name: core-service-config
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                  secretKeyRef:
+                    name: secret-core
+                    key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                    name: secret-core
+                    key: SPRING_DATASOURCE_PASSWORD
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-core
+                  key: MYSQL_ROOT_PASSWORD
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: core
+spec:
+  selector:
+    app: core
+  ports:
+    - protocol: TCP
+      port: 8060
+      targetPort: 8060
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: core-service-config
+data:
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/core"
+  SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-core
+type: Opaque
+data:
+  SPRING_DATASOURCE_USERNAME: bmFkaWE=
+  SPRING_DATASOURCE_PASSWORD: bmFkaWE=
+  SPRING_MAIL_USERNAME: bmFkaWE=
+  SPRING_MAIL_PASSWORD: bmFkaWE=
+  MYSQL_ROOT_PASSWORD: cm9vdC1wYXNzd29yZA==

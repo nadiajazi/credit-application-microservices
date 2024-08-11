@@ -15,52 +15,51 @@ spec:
       containers:
         - name: notification
           image: jazinadia11/notification:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8040
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: docker
-            - name: CONFIG_SERVER_URL
+              value: k8s
+            - name: SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS
               valueFrom:
                 configMapKeyRef:
-                  name: shared-config
-                  key: CONFIG_SERVER_URL
-            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-              valueFrom:
-                configMapKeyRef:
-                  name: shared-config
-                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+                  key: SPRING_KAFKA_BOOTSTRAP-SERVERS
+                  name: notification-config
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mysql://ms_my_sql:3306/notification
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_DATASOURCE_URL
+                  name: notification-config
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
+                  name: secret-notification
                   key: SPRING_DATASOURCE_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
+                  name: secret-notification
                   key: SPRING_DATASOURCE_PASSWORD
-            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+            - name: MYSQL_ROOT_PASSWORD
               valueFrom:
-                configMapKeyRef:
-                  name: shared-config
-                  key: SPRING_KAFKA_BOOTSTRAP_SERVERS
+                secretKeyRef:
+                  name: secret-notification
+                  key: MYSQL_ROOT_PASSWORD
             - name: SPRING_MAIL_HOST
-              value: ms_mail_dev
+              value: maildev-service
             - name: SPRING_MAIL_PORT
               value: "1025"
             - name: SPRING_MAIL_USERNAME
               valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: SPRING_MAIL_USERNAME
+               secretKeyRef:
+                name: secret-notification
+                key: SPRING_MAIL_USERNAME
             - name: SPRING_MAIL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
-                  key: SPRING_MAIL_PASSWORD
+                 name: secret-notification
+                 key: SPRING_MAIL_PASSWORD
 ---
 apiVersion: v1
 kind: Service
@@ -73,3 +72,23 @@ spec:
     - protocol: TCP
       port: 8040
       targetPort: 8040
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notification-config
+data:
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/notification"
+  SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-notification
+type: Opaque
+data:
+  SPRING_DATASOURCE_USERNAME: bmFkaWE=
+  SPRING_DATASOURCE_PASSWORD: bmFkaWE=
+  SPRING_MAIL_USERNAME: bmFkaWE=
+  SPRING_MAIL_PASSWORD: bmFkaWE=
+  MYSQL_ROOT_PASSWORD: cm9vdC1wYXNzd29yZA==

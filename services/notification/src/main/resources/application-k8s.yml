@@ -1,0 +1,55 @@
+server:
+  port: 8040
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  cloud:
+    config:
+      enabled: false
+  application:
+    name: notification
+  datasource:
+    url: jdbc:mysql://mysql:3306/notification
+    username: bmFkaWE=
+    password: bmFkaWE=
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    database: mysql
+  kafka:
+    consumer:
+      bootstrap-servers: kafka:9092
+      group-id: paymentGroup,purchaseGroup
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: purchaseConfirmation:com.example.aibouauth.notification.kafka.purchase.PurchaseConfirmation,paymentConfirmation:com.example.aibouauth.notification.kafka.payment.PaymentConfirmation
+
+  mail:
+    host: maildev-service
+    port: 1025
+    username: bmFkaWE=
+    password: bmFkaWE=
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enabled: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false

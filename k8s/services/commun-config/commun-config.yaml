@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: commun-config
+data:
+  CORE_SERVICE_URL: "http://core:8060/api/v1"
+  NOTIFICATION_SERVICE_URL: "http://notification:8040"
+  PAYMENT_SERVICE_URL: "http://payment:8090"
+  SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"

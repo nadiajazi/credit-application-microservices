@@ -1,0 +1,31 @@
+server:
+  port: 8090
+  error:
+    include-message: always
+    include-binding-errors: always
+spring:
+  application:
+    name: payment
+    configuration:
+      user-url: http://core:8060/api/v1
+  datasource:
+    url: jdbc:postgresql://postgres:5432/payment
+    username: bmFkaWE=
+    password: bmFkaWE=
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      bootstrap-servers: kafka:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: paymentConfirmation:com.example.aibouauth.payment.notification.PaymentNotificationRequest
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false

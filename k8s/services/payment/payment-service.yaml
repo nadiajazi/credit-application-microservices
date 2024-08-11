@@ -15,40 +15,37 @@ spec:
       containers:
         - name: payment
           image: jazinadia11/payment:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8090
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: docker
-            - name: CONFIG_SERVER_URL
+              value: k8s
+            - name: SPRING_KAFKA_BOOTSTRAP-SERVERS
               valueFrom:
                 configMapKeyRef:
-                  name: shared-config
-                  key: CONFIG_SERVER_URL
-            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-              valueFrom:
-                configMapKeyRef:
-                  name: shared-config
-                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+                  key: SPRING_KAFKA_BOOTSTRAP-SERVERS
+                  name: payment-config
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://ms_pg_sql:5432/payment
+              valueFrom:
+                configMapKeyRef:
+                  key: SPRING_DATASOURCE_URL
+                  name: payment-config
+            - name: SPRING_APPLICATION_CONFIGURATION_USER-URL
+              valueFrom:
+                configMapKeyRef:
+                  key: CORE_SERVICE_URL
+                  name: commun-config
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
+                  name: secret-payment
                   key: SPRING_DATASOURCE_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
+                  name: secret-payment
                   key: SPRING_DATASOURCE_PASSWORD
-            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
-              valueFrom:
-                configMapKeyRef:
-                  name: shared-config
-                  key: SPRING_KAFKA_BOOTSTRAP_SERVERS
-            - name: SPRING_APPLICATION_CONFIGURATION_USER_URL
-              value: http://core:8060/api/v1
 ---
 apiVersion: v1
 kind: Service
@@ -61,3 +58,20 @@ spec:
     - protocol: TCP
       port: 8090
       targetPort: 8090
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment-config
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/payment"
+  SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-payment
+type: Opaque
+data:
+  SPRING_DATASOURCE_USERNAME: bmFkaWE=
+  SPRING_DATASOURCE_PASSWORD: bmFkaWE=
