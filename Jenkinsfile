@@ -24,7 +24,7 @@ pipeline {
                     ]) {
 
                         sh """
-                        sshpass -p \${ANSIBLE_SSH_PASSWORD} ssh -o StrictHostKeyChecking=no \${ANSIBLE_SSH_USER}@\${ANSIBLE_HOST} 'echo "cd /opt/docker && ansible-playbook ansible.yml" > /tmp/run_playbook.sh && chmod +x /tmp/run_playbook.sh && /tmp/run_playbook.sh'
+                        sshpass -p \${ANSIBLE_SSH_PASSWORD} ssh -o StrictHostKeyChecking=no \${ANSIBLE_SSH_USER}@\${ANSIBLE_HOST} 'cd /opt/docker && ansible-playbook -i /opt/docker/inventory.ini /opt/docker/kubernetes.yml'
                         """
                     }
                 }
