@@ -22,12 +22,12 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: ZOOKEEPER_CLIENT_PORT
-                  name: zookeeper-config
+                  name: zookeeper-configmap
             - name: ZOOKEEPER_TICK_TIME
               valueFrom:
                 configMapKeyRef:
                   key: ZOOKEEPER_TICK_TIME
-                  name: zookeeper-config
+                  name: zookeeper-configmap
 ---
 apiVersion: v1
 kind: Service
@@ -44,7 +44,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zookeeper-config
+  name: zookeeper-configmap
 data:
   ZOOKEEPER_CLIENT_PORT: "2181"
   ZOOKEEPER_TICK_TIME: "2000"

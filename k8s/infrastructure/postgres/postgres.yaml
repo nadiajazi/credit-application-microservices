@@ -20,7 +20,7 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: pvc-postgres
   namespace: default
 spec:
   accessModes:
