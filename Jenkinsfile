@@ -24,7 +24,7 @@ pipeline {
                     ]) {
 
                         sh """
-                        sshpass -p \${ANSIBLE_SSH_PASSWORD} ssh -o StrictHostKeyChecking=no \${ANSIBLE_SSH_USER}@\${ANSIBLE_HOST} 'cd /opt/docker && ansible-playbook -i /opt/docker/inventory.ini /opt/docker/ansible.yml'
+                        sshpass -p \${ANSIBLE_SSH_PASSWORD} ssh -o StrictHostKeyChecking=no \${ANSIBLE_SSH_USER}@\${ANSIBLE_HOST} 'cd /opt/docker && ansible-playbook ansible.yml'
                         """
                     }
                 }
@@ -33,8 +33,12 @@ pipeline {
     }
 
     post {
-        always {
-            cleanWs()
+            always {
+
+                cleanWs()
+
+                // Trigger the ansible-cd-job
+                build job: 'ansible-cd-job', wait: true
+            }
         }
-    }
 }
