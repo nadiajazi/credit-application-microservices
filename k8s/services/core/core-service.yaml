@@ -25,12 +25,12 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: SPRING_KAFKA_BOOTSTRAP-SERVERS
-                  name: core-service-config
+                  name: core-config
             - name: SPRING_DATASOURCE_URL
               valueFrom:
                   configMapKeyRef:
                     key: SPRING_DATASOURCE_URL
-                    name: core-service-config
+                    name: core-config
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                   secretKeyRef:
@@ -64,7 +64,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: core-service-config
+  name: core-config
 data:
   SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/core"
   SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"
