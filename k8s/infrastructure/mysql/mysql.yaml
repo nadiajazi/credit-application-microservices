@@ -28,7 +28,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-pv-claims
+  name: mysql-pv-claim
   namespace: default
 spec:
   storageClassName: manual
@@ -98,7 +98,7 @@ spec:
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: mysql-pv-claim
+            claimName: mysql-pv-claims
         - name: mysql-init-script-volume
           configMap:
             name: mysql-init-scripts

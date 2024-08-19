@@ -81,7 +81,7 @@ spec:
       volumes:
         - name: postgres-persistent-storage
           persistentVolumeClaim:
-            claimName: postgres-pv-claim
+            claimName: postgres-pv-claims
         - name: postgres-initdb
           configMap:
             name: postgres-initdb-configmaps
