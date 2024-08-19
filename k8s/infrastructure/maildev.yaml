@@ -7,7 +7,7 @@ spec:
   selector:
     app: maildev
   ports:
-    - name: web-ui
+    - name: webui
       protocol: TCP
       port: 1080
       targetPort: 1080
