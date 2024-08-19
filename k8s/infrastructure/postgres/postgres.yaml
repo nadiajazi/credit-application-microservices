@@ -75,25 +75,13 @@ spec:
           volumeMounts:
             - name: postgres-persistent-storage
               mountPath: /var/lib/postgresql/data
-            - name: postgres-initdb
-              mountPath: /docker-entrypoint-initdb.d
       volumes:
         - name: postgres-persistent-storage
           persistentVolumeClaim:
             claimName: postgres-pv-claim
-        - name: postgres-initdb
-          configMap:
-            name: postgres-initdb-configmap
+
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-initdb-configmap
-  namespace: default
-data:
-  init.sql: |
-    CREATE DATABASE IF NOT EXISTS payment;
----
+
 apiVersion: v1
 kind: Service
 metadata:
