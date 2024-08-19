@@ -5,9 +5,9 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  MYSQL_USER: bWFkZQ==
-  MYSQL_PASSWORD: bWFkZQ==
-  MYSQL_ROOT_PASSWORD: Cm9vdGVyWXd2Z29yZ==
+  MYSQL_USER: bWFkZQ== # base64 encoded value for 'made'
+  MYSQL_PASSWORD: bWFkZQ== # base64 encoded value for 'made'
+  MYSQL_ROOT_PASSWORD: cm9vdGVy # base64 encoded value for 'rooter'
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -98,7 +98,7 @@ spec:
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: mysql-pv-claims
+            claimName: mysql-pv-claim
         - name: mysql-init-script-volume
           configMap:
             name: mysql-init-script
