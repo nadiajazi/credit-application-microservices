@@ -5,10 +5,9 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  POSTGRES_USER: bmFkaWE=
-  POSTGRES_PASSWORD: bmFkaWE=
-  POSTGRES_DB: cG9zdGdyZXM=
-
+  POSTGRES_USER: bmFkaWE=         # base64 encoded 'nadia'
+  POSTGRES_PASSWORD: bmFkaWE=     # base64 encoded 'nadia'
+  POSTGRES_DB: cG9zdGdyZXM=       # base64 encoded 'postgres'
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -20,7 +19,7 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 50Mi
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -37,7 +36,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 16Gi
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
