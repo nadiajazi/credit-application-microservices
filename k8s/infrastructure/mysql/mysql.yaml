@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mysql-secrets
+  name: mysql-secret
   namespace: default
 type: Opaque
 data:
@@ -12,7 +12,7 @@ data:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-pv-volumes
+  name: mysql-pv-volume
   namespace: default
   labels:
     type: local
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysql-init-scripts
+  name: mysql-init-script
   namespace: default
 data:
   init.sql: |
@@ -75,17 +75,17 @@ spec:
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: mysql-secrets
+                  name: mysql-secret
                   key: MYSQL_USER
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-secrets
+                  name: mysql-secret
                   key: MYSQL_PASSWORD
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-secrets
+                  name: mysql-secret
                   key: MYSQL_ROOT_PASSWORD
           ports:
             - containerPort: 3306
@@ -101,7 +101,7 @@ spec:
             claimName: mysql-pv-claims
         - name: mysql-init-script-volume
           configMap:
-            name: mysql-init-scripts
+            name: mysql-init-script
 ---
 apiVersion: v1
 kind: Service
