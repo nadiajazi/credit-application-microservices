@@ -46,7 +46,7 @@ public class ProductController {
                return  repository.save(product);
                 }).orElseThrow(()-> new ProductNotFoundException(id));
     }
-    @DeleteMapping("Product/{id}")
+    @DeleteMapping("/Product/{id}")
     String deleteProduct(@PathVariable  Integer id){
         if(!repository.existsById(id)){
             throw  new ProductNotFoundException(id);

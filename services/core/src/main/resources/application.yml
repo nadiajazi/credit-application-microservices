@@ -42,3 +42,23 @@ application:
       expiration: 8640000000000000000
       refresh-token:
         expiration: 60480000000000000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+  observations:
+    key-values:
+      application: core
+  tracing:
+    sampling:
+      probability: 1.0
+
+loki:
+  url: http://localhost:3100/loki/api/v1/push

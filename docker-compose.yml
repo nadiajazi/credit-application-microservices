@@ -72,28 +72,6 @@ services:
     networks:
       - microservices-net
 
-  gateway:
-    image: jazinadia11/gateway:latest
-    container_name: gateway
-    ports:
-      - "8081:8081"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - config-server
-      - discovery
-    networks:
-      - microservices-net
-
-  frontend:
-    build:
-      context: C:/Users/asus/Desktop/CreditApplication/FrontEnd/creditapplication
-      dockerfile: Dockerfile
-    container_name: frontend
-    ports:
-      - "3000:80"
-    networks:
-      - microservices-net
 
   ms_pg_sql:
     container_name: ms_pg_sql
@@ -181,6 +159,51 @@ services:
     networks:
       - microservices-net
 
+  loki:
+    image: grafana/loki:main
+    container_name: loki
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    ports:
+      - "3100:3100"
+    networks:
+      - microservices-net
+  prometheus:
+    image: prom/prometheus:v2.46.0
+    container_name: prometheus
+    command:
+      - --enable-feature=exemplar-storage
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - microservices-net
+  tempo:
+    image: grafana/tempo:2.2.2
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./observability/tempo/tempo.yml:/etc/tempo.yaml:ro
+      - ./data/tempo:/tmp/tempo
+    ports:
+      - "3110:3100"
+      - "9411:9411"
+    networks:
+      - microservices-net
+  grafana:
+    image: grafana/grafana:10.1.0
+    container_name: grafana
+    volumes:
+      - ./observability/grafana:/etc/grafana/provisioning/datasources:ro
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+        - "3002:3000"
+    networks:
+      - microservices-net
 networks:
   microservices-net:
     driver: bridge

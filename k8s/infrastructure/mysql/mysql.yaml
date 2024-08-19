@@ -5,43 +5,72 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  MYSQL_USER: bmFkaWE=
-  MYSQL_PASSWORD: bmFkaWE=
-  MYSQL_ROOT_PASSWORD: cm9vdC1wYXNzd29yZA==
+  MYSQL_USER: bWFkZQ==
+  MYSQL_PASSWORD: bWFkZQ==
+  MYSQL_ROOT_PASSWORD: Cm9vdGVyWXd2Z29yZ==
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-volume
+  namespace: default
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/mysql-data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-mysql
+  name: mysql-pv-claim
   namespace: default
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  storageClassName: standard
+      storage: 500Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-init-script
+  namespace: default
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS core;
+    CREATE DATABASE IF NOT EXISTS notification;
+    GRANT ALL PRIVILEGES ON core.* TO 'nadia'@'%';
+    GRANT ALL PRIVILEGES ON notification.* TO 'nadia'@'%';
+    FLUSH PRIVILEGES;
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: mysql
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: mysql
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         app: mysql
     spec:
       containers:
-        - name: mysql
-          image: mysql:latest
-          ports:
-            - containerPort: 3306
+        - image: mysql:latest
+          name: mysql
           env:
             - name: MYSQL_USER
               valueFrom:
@@ -58,43 +87,31 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: MYSQL_ROOT_PASSWORD
+          ports:
+            - containerPort: 3306
+              name: mysql
           volumeMounts:
-            - name: mysql-storage
+            - name: mysql-persistent-storage
               mountPath: /var/lib/mysql
-            - name: init-scripts
+            - name: mysql-init-script-volume
               mountPath: /docker-entrypoint-initdb.d
       volumes:
-        - name: mysql-storage
+        - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: mysql-pvc
-        - name: init-scripts
+            claimName: mysql-pv-claim
+        - name: mysql-init-script-volume
           configMap:
-            name: mysql-init-config
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mysql-init-config
-  namespace: default
-data:
-  init.sql: |
-    CREATE DATABASE IF NOT EXISTS core;
-    GRANT ALL PRIVILEGES ON core.* TO 'nadia'@'%';
-    CREATE DATABASE IF NOT EXISTS notification;
-    GRANT ALL PRIVILEGES ON notification.* TO 'nadia'@'%';
+            name: mysql-init-script
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: mysql
   name: mysql
+  namespace: default
 spec:
-
   ports:
     - port: 3306
-      protocol: TCP
       targetPort: 3306
+      protocol: TCP
   selector:
     app: mysql
-

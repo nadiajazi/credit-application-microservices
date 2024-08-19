@@ -66,6 +66,7 @@ kind: Service
 metadata:
   name: notification
 spec:
+  type: LoadBalancer
   selector:
     app: notification
   ports:

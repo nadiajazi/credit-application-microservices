@@ -1,12 +1,3 @@
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-config
-  namespace: default
-data:
-  POSTGRES_DB: "payment"
----
 apiVersion: v1
 kind: Secret
 metadata:
@@ -16,20 +7,37 @@ type: Opaque
 data:
   POSTGRES_USER: bmFkaWE=
   POSTGRES_PASSWORD: bmFkaWE=
+  POSTGRES_DB: cG9zdGdyZXM=
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv-volume
+  namespace: default
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/postgres-data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-postgres
+  name: postgres-pv-claim
   namespace: default
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  storageClassName: standard
-
+      storage: 16Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -49,14 +57,7 @@ spec:
       containers:
         - name: postgres
           image: postgres:latest
-          ports:
-            - containerPort: 5432
           env:
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: postgres-config
-                  key: POSTGRES_DB
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -67,23 +68,28 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
           volumeMounts:
-            - name: postgres-storage
+            - name: postgres-persistent-storage
               mountPath: /var/lib/postgresql/data
-            - name: init-scripts
+            - name: postgres-initdb
               mountPath: /docker-entrypoint-initdb.d
       volumes:
-        - name: postgres-storage
+        - name: postgres-persistent-storage
           persistentVolumeClaim:
-            claimName: postgres-pvc
-        - name: init-scripts
+            claimName: postgres-pv-claim
+        - name: postgres-initdb
           configMap:
-            name: postgres-init-config
+            name: postgres-initdb-configmap
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-init-config
+  name: postgres-initdb-configmap
   namespace: default
 data:
   init.sql: |
@@ -92,13 +98,12 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: postgres
   name: postgres
+  namespace: default
 spec:
   ports:
     - port: 5432
-      protocol: TCP
       targetPort: 5432
+      protocol: TCP
   selector:
     app: postgres

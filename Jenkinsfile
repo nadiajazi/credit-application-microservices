@@ -14,6 +14,12 @@ pipeline {
             }
         }
 
+        stage('Clone Frontend Repository') {
+                    steps {
+                        git branch: 'microservicearchitecture', url: 'https://github.com/nadiajazi/CreditApplicationFrontend'
+                    }
+                }
+
         stage('Run Ansible Playbook') {
             steps {
                 script {
