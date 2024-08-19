@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: postgres-secret
+  name: postgres-secrets
   namespace: default
 type: Opaque
 data:
@@ -13,7 +13,7 @@ data:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv-volume
+  name: postgres-pv-volumes
   namespace: default
   labels:
     type: local
@@ -29,7 +29,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pv-claim
+  name: postgres-pv-claims
   namespace: default
 spec:
   storageClassName: manual
@@ -61,17 +61,17 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: postgres-secrets
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: postgres-secrets
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: postgres-secrets
                   key: POSTGRES_DB
           volumeMounts:
             - name: postgres-persistent-storage
@@ -84,12 +84,12 @@ spec:
             claimName: postgres-pv-claim
         - name: postgres-initdb
           configMap:
-            name: postgres-initdb-configmap
+            name: postgres-initdb-configmaps
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-initdb-configmap
+  name: postgres-initdb-configmaps
   namespace: default
 data:
   init.sql: |
