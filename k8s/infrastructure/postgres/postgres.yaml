@@ -28,7 +28,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pv-claims
+  name: postgres-pv-claim
   namespace: default
 spec:
   storageClassName: manual
@@ -80,7 +80,7 @@ spec:
       volumes:
         - name: postgres-persistent-storage
           persistentVolumeClaim:
-            claimName: postgres-pv-claims
+            claimName: postgres-pv-claim
         - name: postgres-initdb
           configMap:
             name: postgres-initdb-configmap
