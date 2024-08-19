@@ -5,9 +5,9 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  MYSQL_USER: bWFkZQ== # base64 encoded value for 'made'
-  MYSQL_PASSWORD: bWFkZQ== # base64 encoded value for 'made'
-  MYSQL_ROOT_PASSWORD: cm9vdGVy # base64 encoded value for 'rooter'
+  MYSQL_USER: bmFkaWE=
+  MYSQL_PASSWORD: bmFkaWE=
+  MYSQL_ROOT_PASSWORD: cm9vdC1wYXNzd29yZA==
 ---
 apiVersion: v1
 kind: PersistentVolume

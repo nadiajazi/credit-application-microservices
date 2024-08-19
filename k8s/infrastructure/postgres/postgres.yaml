@@ -5,9 +5,9 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  POSTGRES_USER: bmFkaWE=         # base64 encoded 'nadia'
-  POSTGRES_PASSWORD: bmFkaWE=     # base64 encoded 'nadia'
-  POSTGRES_DB: cG9zdGdyZXM=       # base64 encoded 'postgres'
+  POSTGRES_USER: bmFkaWE=
+  POSTGRES_PASSWORD: bmFkaWE=
+  POSTGRES_DB: cGF5bWVudA==
 ---
 apiVersion: v1
 kind: PersistentVolume
