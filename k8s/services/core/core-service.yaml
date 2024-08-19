@@ -34,17 +34,17 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                   secretKeyRef:
-                    name: core-secret
+                    name: secret-core
                     key: SPRING_DATASOURCE_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                   secretKeyRef:
-                    name: core-secret
+                    name: secret-core
                     key: SPRING_DATASOURCE_PASSWORD
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: core-secret
+                  name: secret-core
                   key: MYSQL_ROOT_PASSWORD
 
 ---
@@ -72,7 +72,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: core-secret
+  name: secret-core
 type: Opaque
 data:
   SPRING_DATASOURCE_USERNAME: bmFkaWE=
