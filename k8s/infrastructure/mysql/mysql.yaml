@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: secret-mysql
+  name: secret-of-mysql
   namespace: default
 type: Opaque
 data:
@@ -75,17 +75,17 @@ spec:
             - name: MYSQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: secret-mysql
+                  name: secret-of-mysql
                   key: MYSQL_USER
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret-mysql
+                  name: secret-of-mysql
                   key: MYSQL_PASSWORD
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret-mysql
+                  name: secret-of-mysql
                   key: MYSQL_ROOT_PASSWORD
           ports:
             - containerPort: 3306
