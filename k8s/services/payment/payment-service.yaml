@@ -35,7 +35,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: CORE_SERVICE_URL
-                  name: commun-config
+                  name: payment-config
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -66,6 +66,7 @@ metadata:
 data:
   SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/payment"
   SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"
+  CORE_SERVICE_URL: "http://core:8060/api/v1"
 ---
 apiVersion: v1
 kind: Secret
