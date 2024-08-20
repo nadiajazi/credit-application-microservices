@@ -4,6 +4,7 @@ metadata:
   name: maildev-service
   namespace: default
 spec:
+  type: LoadBalancer
   selector:
     app: maildev
   ports:
@@ -15,7 +16,6 @@ spec:
       protocol: TCP
       port: 1025
       targetPort: 1025
-  type: ClusterIP
 
 ---
 apiVersion: apps/v1
