@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 .requestMatchers(DELETE, "/api/v1/management/**").hasAnyAuthority(ADMIN_DELETE.name(), MANAGER_DELETE.name())
                                 .requestMatchers("/api/purchases/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/api/purchases/**").authenticated()
+                                .requestMatchers("/actuator/prometheus").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
