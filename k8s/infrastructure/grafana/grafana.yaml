@@ -10,7 +10,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
   hostPath:
-    path: /mnt/data/grafana
+    path: /mnt/data/grafana-service
 
 ---
 apiVersion: v1

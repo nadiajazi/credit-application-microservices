@@ -43,7 +43,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
   hostPath:
-    path: /mnt/data/prometheus
+    path: /mnt/data/prometheus-service
 
 ---
 
