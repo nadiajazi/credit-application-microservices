@@ -4,7 +4,7 @@ metadata:
   name: maildev-service
   namespace: default
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: maildev
   ports:
