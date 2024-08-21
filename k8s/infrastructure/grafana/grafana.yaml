@@ -89,4 +89,4 @@ spec:
   ports:
     - port: 3000
       targetPort: 3000
-      nodePort: 30770
+      nodePort: 30771
