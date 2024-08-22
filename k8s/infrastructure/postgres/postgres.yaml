@@ -41,7 +41,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: postgres-deployment
   namespace: default
 spec:
   replicas: 1
