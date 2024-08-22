@@ -34,3 +34,15 @@ spring:
       properties:
         spring.json.type.mapping: paymentConfirmation:com.example.aibouauth.payment.notification.PaymentNotificationRequest
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true

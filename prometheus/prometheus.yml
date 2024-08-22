@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+scrape_configs:
+    - job_name: 'core'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+        - targets: ['core:8060']
+          labels:
+            application: 'core'
+    - job_name: 'payment'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+        - targets: ['payment:8090']
+          labels:
+            application: 'payment'
+    - job_name: 'notification'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+        - targets: ['notification:8040']
+          labels:
+            application: 'notification'
